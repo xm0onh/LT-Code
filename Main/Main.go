@@ -137,20 +137,10 @@ func main() {
 			conAct.Decoder.MacroBlockIDToDropletSliceMap[value.BlockID] = dropletSlice
 
 		}
-		//for Key,_:= range conAct.Decoder.MacroBlockIDToDropletSliceMap{
-
-		//	}
+	
 
 	}
-	//StartTimeToDecode := time.Now()
-	//	for i := 0; i < 33; i++ {
-	//		decoder.Peel(1)
-
-	//	}
-	//EndTimeToDecode := time.Since(StartTimeToDecode)
-	//	fmt.Println("Microblocks are, ",decoder.Blockchain.MapBlockHashToMicroBlock)
-	//	fmt.Println("Microblocks are, ", decoder.Blockchain.MapBlockHashToMicroBlock)
-	//	fmt.Println("Microblocks are, ", len(decoder.Blockchain.MapBlockHashToMicroBlock))
+	
 
 	/////////////////////Encoder//////////
 	fmt.Println("Requestor IDs are", conAct.RequestorIDs)
