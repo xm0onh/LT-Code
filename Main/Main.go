@@ -17,69 +17,7 @@ import (
 )
 
 func main() {
-	/*
-		numberOfMicroBlocks := 33
-		NumberOfTransactionInEachMicroBlock := 500
-		var testMapMicrobLockHashtoMicroblock map[string]int
-		testMapMicrobLockHashtoMicroblock = make(map[string]int)
-		macroblock := Encoding.GenerateMacroBlockStruct(numberOfMicroBlocks, 1, NumberOfTransactionInEachMicroBlock)
-		for indx, value := range macroblock.MicBlock {
-			if _, ok := testMapMicrobLockHashtoMicroblock[string(value.MicroBlockHash)]; ok {
-				fmt.Println("Duplicate detected")
-			}
-			testMapMicrobLockHashtoMicroblock[string(value.MicroBlockHash)] = indx
-		}
-		DegreeSliceFloat := RSD.RobustSolitonDistribution(33, 15, 0.1)
-		fmt.Println("Degree Slice length is floati is", len(DegreeSliceFloat))
-		//DegreeSliceFloat:=Rsd.SolitonDistribution(3000)
-		degreeSlice := make([]int, 0, len(DegreeSliceFloat))
-		for i := 0; i < 3*len(DegreeSliceFloat); i++ {
-			degree := RSD.PickDegree(rnd.New(RSD.NewMersenneTwister(int64(120+i))), DegreeSliceFloat)
-			degreeSlice = append(degreeSlice, degree)
-		}
-		uniformlySelectedIndices := make([]int, 0, 3*len(DegreeSliceFloat))
-		//droplet:=Encoding.Initializedroplet(macroblock.MicBlock)
-		dropletSlice := make([]Encoding.Droplet, 0, len(DegreeSliceFloat))
-		StarttimeToEncode := time.Now()
-		for indx, value := range degreeSlice {
-			//	for i:=0;i<value;i++{
-			uniformlySelectedIndices = RSD.SampleUniform(rnd.New(rnd.NewSource(int64(100+indx))), value, len(DegreeSliceFloat))
-			//}
-			droplet := macroblock.MicBlock[uniformlySelectedIndices[0]].GenerateLubyTransformBlock(macroblock.MicBlock, uniformlySelectedIndices)
-			dropletSlice = append(dropletSlice, droplet)
-		}
-		EndtimeToEncode := time.Since(StarttimeToEncode)
-		//Uniformly selected num numbers of indices from maximum max
-
-		decoder := Decoding.InitDecoder()
-		decoder.MacroBlockIDToDropletSliceMap[1] = dropletSlice
-
-		StartTimeToDecode := time.Now()
-		for i := 0; i < 33; i++ {
-			decoder.Peel(1)
-
-		}
-		EndTimeToDecode := time.Since(StartTimeToDecode)
-		//	fmt.Println("Microblocks are, ",decoder.Blockchain.MapBlockHashToMicroBlock)
-		fmt.Println("Microblocks are, ", len(decoder.Blockchain.MapBlockHashToMicroBlock))
-
-		fmt.Println("Time to encode is", EndtimeToEncode)
-		fmt.Println("Decoding time is", EndTimeToDecode)*/
-
-	///////////////
-
-	//fmt.Println("Time to encode is", EndtimeToEncode)
-	//fmt.Println("Decoding time is", EndTimeToDecode)
-
-	////////
-
-	//	blksSlice := make([][]byte, 0, 10)
-	//	for i := 0; i < 3; i++ {
-	//		blks, _ := ConActInterface.GenRandomBytes(32)
-	//		blksSlice = append(blksSlice, blks)
-	//	}
-	//	MT.NewTree(blksSlice)
-
+	
 	/////////////////Network Implementation///////////
 	gob.Register(Encoding.Droplet{})
 	gob.Register(Encoding.Request{})
