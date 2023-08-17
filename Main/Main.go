@@ -121,34 +121,13 @@ func main() {
 		fmt.Println("Index in pubkeySlice is", indx)
 		conAct.MapIDToPbKey[conAct.IDs[indx]] = value
 	}
-	//	for idx, peer := range conAct.Peers {
-
-	//		conAct.NodeIdToDialConnMap[conAct.IDs[idx]] = Net.DialNode(peer, conAct.MsgsPort)
-	//	}
-
-	//	for idx, requestors := range conAct.RequestorIPs {
-
-	//		conAct.NodeIdToDialConnMap[conAct.IDs[idx]] = Net.DialNode(requestors, conAct.MsgsPort)
-	//	}
+	
 	conAct.Decoder = Decoding.InitDecoder()
-	//	IpAndID:=Net.Ec2IDandIPExtractor("us-east-1")
-	//	fmt.Println("IpAndID is ", IpAndID)
-	//	for i:=0;i<len(IpAndID);i+=2{
-	//		conAct.IDToIPMP[IpAndID[i]]=IpAndID[i+1]
-	//	}
-	//	fmt.Println("conAct.IDToIPMP is ", conAct.IDToIPMP)
-	//	for k,v :=range conAct.IDToIPMP{
-	//		conAct.NodeIdToDialConnMap[k] = Net.DialNode(v, conAct.MsgsPort)
-
-	//	}
-	//fmt.Println("Nodeto Dial ConnMap in the main is", conAct.NodeIdToDialConnMap)
+	
 	////////////////////////////Decoder//////
 
 	if !Net.IfIamArequestor(conAct.RequestorIDs, MyID) {
 
-		//	var testMapMicrobLockHashtoMicroblock map[string]int
-		//	testMapMicrobLockHashtoMicroblock = make(map[string]int)
-		//macroblock := Encoding.GenerateMacroBlockStruct(numberOfMicroBlocks, 1, NumberOfTransactionInEachMicroBlock)
 		macroblockSlice := Encoding.GenerateMacroBlocks(numberofMacroBlocks, numberOfMicroBlocks, NumberOfTransactionInEachMicroBlock)
 		for _, value := range *macroblockSlice {
 			dropletSlice := Encoding.GenerateDropletSlice(value, numberOfMicroBlocks, numberOfMicroBlocks/2, 0.1, conAct.PrivateKey, conAct.MyID)
