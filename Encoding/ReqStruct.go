@@ -1,11 +1,12 @@
 package Encoding
 
 import (
-	Crypto "LT-Code/Cryptography"
 	"fmt"
-	"go.dedis.ch/kyber"
-	bn256 "go.dedis.ch/kyber/pairing/bn256"
-	"go.dedis.ch/kyber/sign/bls"
+
+	Crypto "github.com/xm0onh/LT-Code/Cryptography"
+	"go.dedis.ch/kyber/v3"
+	bn256 "go.dedis.ch/kyber/v3/pairing/bn256"
+	"go.dedis.ch/kyber/v3/sign/bls"
 )
 
 type Request struct {

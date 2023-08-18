@@ -1,8 +1,8 @@
 package Net
 
-import 	(
-	E "LT-Code/Encoding"
-//	"LT-Code/Timer"
+import (
+	E "github.com/xm0onh/LT-Code/Encoding"
+	//	"github.com/xm0onh/LT-Code/Timer"
 	"encoding/gob"
 	"fmt"
 	"net"
@@ -18,36 +18,35 @@ import 	(
 
 //}
 
-
-func MsgSender(conn net.Conn,Msg E.VerifyEntity, peer,nodeID, port string,IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
+func MsgSender(conn net.Conn, Msg E.VerifyEntity, peer, nodeID, port string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
 	////	ctx,cancel:=context.WithCancel(context.Background())
 	//defer cancel()
 	//	fmt.Println("Conn is, ", conn)
 	//		fmt.Println("msg is,", Msg)
 
-//	Encoder := gob.NewEncoder(conn)
-	enc:=(*MapIdToEncoder)[nodeID]
+	//	Encoder := gob.NewEncoder(conn)
+	enc := (*MapIdToEncoder)[nodeID]
 	err := enc.Encode(&Msg)
 	//err := encoder.Encode(&Msg)
 	if err != nil {
 		fmt.Println("Encoding error is", err.Error())
 		conn.Close()
-		conn=nil
+		conn = nil
 		time.Sleep(300 * time.Millisecond)
 		conn = DialNode(peer, port)
 		fmt.Println("Creating new Connection")
 		enc := gob.NewEncoder(conn)
-		(*IdToConnMap)[nodeID]=conn
-		enc=gob.NewEncoder(conn)
-		(*MapIdToEncoder)[nodeID]=enc
-		MsgSender(conn, Msg, peer,nodeID, port, IdToConnMap,MapIdToEncoder)
+		(*IdToConnMap)[nodeID] = conn
+		enc = gob.NewEncoder(conn)
+		(*MapIdToEncoder)[nodeID] = enc
+		MsgSender(conn, Msg, peer, nodeID, port, IdToConnMap, MapIdToEncoder)
 		//return enc, true
 	}
 	//	conn.Close()
 	//return enc, false
 }
 
-func DialNode(peer, port string ) net.Conn{
+func DialNode(peer, port string) net.Conn {
 	conn, err := net.Dial("tcp", peer+":"+port)
 
 	if err != nil {
@@ -55,4 +54,3 @@ func DialNode(peer, port string ) net.Conn{
 	}
 	return conn
 }
-	

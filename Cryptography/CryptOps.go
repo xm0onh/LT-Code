@@ -2,11 +2,12 @@ package Cryptography
 
 import (
 	"crypto/sha256"
-	//"go.dedis.ch/kyber/share"
-	"go.dedis.ch/kyber"
-	bn256 "go.dedis.ch/kyber/pairing/bn256"
-	"go.dedis.ch/kyber/sign/bls"
+	//"go.dedis.ch/kyber/v3share"
 	"strconv"
+
+	"go.dedis.ch/kyber/v3"
+	bn256 "go.dedis.ch/kyber/v3/pairing/bn256"
+	"go.dedis.ch/kyber/v3/sign/bls"
 	//	"CleanThresholdSig/Verification"
 	//	D "CleanThresholdSig/Def"
 	//	"strconv"

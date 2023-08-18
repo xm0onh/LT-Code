@@ -1,8 +1,9 @@
 package Decoding
 
 import (
-	"LT-Code/Encoding"
 	"sync"
+
+	"github.com/xm0onh/LT-Code/Encoding"
 )
 
 type Decoder struct {

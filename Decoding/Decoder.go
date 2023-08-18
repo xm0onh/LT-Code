@@ -1,15 +1,17 @@
 package Decoding
 
 import (
-	"LT-Code/Encoding"
-	N "LT-Code/Net"
-	"LT-Code/Timer"
 	"bytes"
 	"encoding/gob"
 	"encoding/json"
 	"fmt"
-//	"github.com/hashicorp/vault/helper/xor"
-		"github.com/hashicorp/vault/sdk/helper/xor"
+
+	"github.com/xm0onh/LT-Code/Encoding"
+	N "github.com/xm0onh/LT-Code/Net"
+	"github.com/xm0onh/LT-Code/Timer"
+
+	//	"github.com/hashicorp/vault/helper/xor"
+	"github.com/hashicorp/vault/sdk/helper/xor"
 
 	"net"
 	"time"
@@ -101,12 +103,13 @@ func (decoder Decoder) GetSingleton(MacroBlockId int) (int, int, bool) {
 	return 0, 0, false
 }
 
-//func  removeEdge(idx int, droplet Encoding.Droplet){
-//	droplet.SeqMicroBlockSlice[idx]=false
-//}
-///In peel first we get a singleton and add its MicroBlock to the mainChain. Then we find all droplets that has edges to
-///to the respective MicroBlock of singleton. We simply perform xor between those Microblocks and the singleton and remove
-///those edges from droplets.
+//	func  removeEdge(idx int, droplet Encoding.Droplet){
+//		droplet.SeqMicroBlockSlice[idx]=false
+//	}
+//
+// /In peel first we get a singleton and add its MicroBlock to the mainChain. Then we find all droplets that has edges to
+// /to the respective MicroBlock of singleton. We simply perform xor between those Microblocks and the singleton and remove
+// /those edges from droplets.
 func (decoder Decoder) Peel(blockId int) bool {
 	_, _, success := decoder.GetSingleton(blockId)
 	//fmt.Println("idx,seqIdx,bol", SingleTonIndexinDropletSliceMap,idxBlockWithinSingleton,success)

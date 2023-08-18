@@ -1,19 +1,22 @@
 package Encoding
 
 import (
-	//"LT-Code/Decoding"
+	//"github.com/xm0onh/LT-Code/Decoding"
 	"bytes"
+
 	"github.com/bits-and-blooms/bloom"
 
 	//"crypto/sha256"
-	C "LT-Code/Cryptography"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/vault/helper/xor"
-	//	"github.com/hashicorp/vault/sdk/helper/xor"
-	"go.dedis.ch/kyber"
 
+	"github.com/hashicorp/vault/helper/xor"
+	C "github.com/xm0onh/LT-Code/Cryptography"
+
+	//	"github.com/hashicorp/vault/sdk/helper/xor"
+	"go.dedis.ch/kyber/v3"
 )
+
 /*
 func (MicroBlockSlice MicroBlockSliceStruct) EncodeMacroBlock(seq int,degree int) EncDecStructs.Droplet {
 //	BufferForEncodingFirstElementofMcBlockInDegree := new(bytes.Buffer)
@@ -108,31 +111,34 @@ func JsonByteEncoder(MicroBlk1 MicroBlock) *bytes.Buffer {
 }
 
 /*
-func GetDegree(maxNumberOfBlksToBeEncoded, Seed int) []int {
-	degreeSlice := make([]int, maxNumberOfBlksToBeEncoded)
-	for i := 0; i < maxNumberOfBlksToBeEncoded; i++ {
-		degreeSlice[i] = i
-	}
-	//fmt.Println("Degree slice is", degreeSlice)
-	//rand.Seed(time.Now().UnixNano())
-	rand.Seed(int64(Seed))
-	//r := rand.New(s) // initialize local pseudorandom generator
-	degree := rand.Intn(maxNumberOfBlksToBeEncoded)
-	if degree == 0 {
-		degree = 1
-	}
+	func GetDegree(maxNumberOfBlksToBeEncoded, Seed int) []int {
+		degreeSlice := make([]int, maxNumberOfBlksToBeEncoded)
+		for i := 0; i < maxNumberOfBlksToBeEncoded; i++ {
+			degreeSlice[i] = i
+		}
+		//fmt.Println("Degree slice is", degreeSlice)
+		//rand.Seed(time.Now().UnixNano())
+		rand.Seed(int64(Seed))
+		//r := rand.New(s) // initialize local pseudorandom generator
+		degree := rand.Intn(maxNumberOfBlksToBeEncoded)
+		if degree == 0 {
+			degree = 1
+		}
+
 //	fmt.Println("Degree value is", degree)
+
 	rand.Shuffle(len(degreeSlice), func(i, j int) { degreeSlice[i], degreeSlice[j] = degreeSlice[j], degreeSlice[i] })
+
 //	fmt.Println("returning degree slice", degreeSlice[:degree])
-	return degreeSlice[:degree]
-}
 
-func HashingStructSha256(o interface{}) []byte {
-	h := sha256.New()
-	h.Write([]byte(fmt.Sprintf("%v", o)))
-	return h.Sum(nil)
-}
+		return degreeSlice[:degree]
+	}
 
+	func HashingStructSha256(o interface{}) []byte {
+		h := sha256.New()
+		h.Write([]byte(fmt.Sprintf("%v", o)))
+		return h.Sum(nil)
+	}
 */
 func (microblock MicroBlock) GenerateLubyTransformBlock(microblockSlice []MicroBlock, indices []int, priv kyber.Scalar, nodeID string) Droplet {
 	//droplet.SeqMicroBlockSlice[indx]
@@ -158,7 +164,7 @@ func (microblock MicroBlock) GenerateLubyTransformBlock(microblockSlice []MicroB
 	hash := C.CalcHash(droplet.XorMicroBlocks)
 	droplet.DropletHash = hash
 	droplet.Sig = C.SignMsg(droplet.DropletHash, priv)
-	droplet.Bloom=bloom.BloomFilter{}
+	droplet.Bloom = bloom.BloomFilter{}
 	return droplet
 }
 
@@ -198,14 +204,14 @@ func Initializedroplet(microblockSlice []MicroBlock, nodeID string) Droplet {
 
 }
 
-func GenerateBloomFilter(dropletSlice []Droplet, CommitteeSize int)  []Droplet{
+func GenerateBloomFilter(dropletSlice []Droplet, CommitteeSize int) []Droplet {
 	bloom := bloom.NewWithEstimates(uint(CommitteeSize), 0.0000001)
 	for _, droplete := range dropletSlice {
 		bloom.Add(droplete.DropletHash)
 	}
 
 	addBloomFilterToDropletes(dropletSlice, *bloom)
-return dropletSlice
+	return dropletSlice
 }
 
 func addBloomFilterToDropletes(dropletSlice []Droplet, bloom bloom.BloomFilter) {
@@ -213,4 +219,3 @@ func addBloomFilterToDropletes(dropletSlice []Droplet, bloom bloom.BloomFilter) 
 		droplete.Bloom = bloom
 	}
 }
-

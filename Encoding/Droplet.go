@@ -2,9 +2,9 @@ package Encoding
 
 import (
 	"github.com/bits-and-blooms/bloom"
-	"go.dedis.ch/kyber"
-	bn256 "go.dedis.ch/kyber/pairing/bn256"
-	"go.dedis.ch/kyber/sign/bls"
+	"go.dedis.ch/kyber/v3"
+	bn256 "go.dedis.ch/kyber/v3/pairing/bn256"
+	"go.dedis.ch/kyber/v3/sign/bls"
 )
 
 //SeqMicroBlockSlice is a bit array: An on bit will show which Microblock is encoded inside droplet
@@ -43,7 +43,7 @@ func (D Droplet) Verify(IdTOPbKeyMap map[string]kyber.Point) bool {
 	return false
 }
 
-//Convert [32]byte to []byte
+// Convert [32]byte to []byte
 func ConvertB32toByte(B [32]byte) []byte {
 	X := B
 	return X[:]

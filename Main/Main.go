@@ -1,23 +1,24 @@
 package main
 
 import (
-	Con "LT-Code/ConActInterface"
-	"LT-Code/Timer"
 	"github.com/bits-and-blooms/bloom"
+	Con "github.com/xm0onh/LT-Code/ConActInterface"
+	"github.com/xm0onh/LT-Code/Timer"
 
-	Crypt "LT-Code/Cryptography"
-	"LT-Code/Decoding"
-	"LT-Code/Encoding"
-	"LT-Code/Net"
 	"encoding/gob"
 	"fmt"
 	"os"
 	"strconv"
 	"time"
+
+	Crypt "github.com/xm0onh/LT-Code/Cryptography"
+	"github.com/xm0onh/LT-Code/Decoding"
+	"github.com/xm0onh/LT-Code/Encoding"
+	"github.com/xm0onh/LT-Code/Net"
 )
 
 func main() {
-	
+
 	/////////////////Network Implementation///////////
 	gob.Register(Encoding.Droplet{})
 	gob.Register(Encoding.Request{})
@@ -121,9 +122,9 @@ func main() {
 		fmt.Println("Index in pubkeySlice is", indx)
 		conAct.MapIDToPbKey[conAct.IDs[indx]] = value
 	}
-	
+
 	conAct.Decoder = Decoding.InitDecoder()
-	
+
 	////////////////////////////Decoder//////
 
 	if !Net.IfIamArequestor(conAct.RequestorIDs, MyID) {
@@ -132,15 +133,13 @@ func main() {
 		for _, value := range *macroblockSlice {
 			dropletSlice := Encoding.GenerateDropletSlice(value, numberOfMicroBlocks, numberOfMicroBlocks/2, 0.1, conAct.PrivateKey, conAct.MyID)
 			fmt.Println("Len Droplet Slice is", len(dropletSlice))
-			dropletSlice=Encoding.GenerateBloomFilter(dropletSlice, CommitteeSize)
+			dropletSlice = Encoding.GenerateBloomFilter(dropletSlice, CommitteeSize)
 
 			conAct.Decoder.MacroBlockIDToDropletSliceMap[value.BlockID] = dropletSlice
 
 		}
-	
 
 	}
-	
 
 	/////////////////////Encoder//////////
 	fmt.Println("Requestor IDs are", conAct.RequestorIDs)
@@ -193,4 +192,3 @@ func idle() {
 	}
 
 }
-

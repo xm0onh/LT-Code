@@ -1,11 +1,11 @@
 package Cryptography
 
 import (
-	"go.dedis.ch/kyber/pairing/bn256"
-	"go.dedis.ch/kyber/sign/bls"
-	"go.dedis.ch/kyber/util/random"
+	"go.dedis.ch/kyber/v3/pairing/bn256"
+	"go.dedis.ch/kyber/v3/sign/bls"
+	"go.dedis.ch/kyber/v3/util/random"
 
-	"go.dedis.ch/kyber"
+	"go.dedis.ch/kyber/v3"
 	//	"os/exec"
 
 	"os"

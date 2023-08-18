@@ -2,11 +2,13 @@ package Encoding
 
 import (
 	"fmt"
-	"go.dedis.ch/kyber"
+
+	"go.dedis.ch/kyber/v3"
 
 	//	"time"
-	RSD "LT-Code/RobustSolitarDistribution"
 	rnd "math/rand"
+
+	RSD "github.com/xm0onh/LT-Code/RobustSolitarDistribution"
 )
 
 func GenerateDropletSlice(macroblock MicroBlockSliceStruct, NumberOfMicroBlocks, m int, delta float64, priv kyber.Scalar, nodeID string) []Droplet {

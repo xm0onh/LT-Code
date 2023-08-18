@@ -1,7 +1,7 @@
 package Timer
 
 import (
-	"go.dedis.ch/kyber"
+	"go.dedis.ch/kyber/v3"
 )
 
 type TimerStruct struct {
