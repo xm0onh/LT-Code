@@ -10,10 +10,10 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/hashicorp/vault/helper/xor"
+	// "github.com/hashicorp/vault/helper/xor"
 	C "github.com/xm0onh/LT-Code/Cryptography"
 
-	//	"github.com/hashicorp/vault/sdk/helper/xor"
+	"github.com/hashicorp/vault/sdk/helper/xor"
 	"go.dedis.ch/kyber/v3"
 )
 
