@@ -3,9 +3,7 @@ package Net
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net"
-	"net/http"
 	"os"
 	"os/exec"
 	"regexp"
@@ -222,33 +220,16 @@ func Ec2RequestorIDExtractorForAllRegions(regions []string, role, value string) 
 	return IDs
 }
 
-// func GetmyID() string {
-// 	cmd := "wget"
-// 	args := []string{"-q", "-O", "-", "http://169.254.169.254/latest/meta-data/instance-id"}
-// 	out, err := exec.Command(cmd, args...).Output()
-// 	if err != nil {
-// 		fmt.Fprintln(os.Stderr, err)
-// 		os.Exit(1)
-// 	}
-
-// 	return string(out)
-// }
-
 func GetmyID() string {
-	resp, err := http.Get("http://169.254.169.254/latest/meta-data/instance-id")
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
+	cmd := "wget"
+	args := []string{"-q", "-O", "-", "http://instance-data/latest/meta-data/instance-id"}
+	out, err := exec.Command(cmd, args...).Output()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 
-	return string(body)
+	return string(out)
 }
 
 func IPaddress() (string, error) {
