@@ -26,7 +26,7 @@ func main() {
 	gob.Register(bloom.BloomFilter{})
 
 	////////Key setup and Loading//////////
-	regions := []string{"us-east-1", "eu-central-1", "sa-east-1"}
+	regions := []string{"us-east-2", "eu-central-1", "sa-east-1"}
 	fmt.Println("Getting Node IDs")
 	NodeIds := Net.GetIDs(regions)
 	//	Crypt.KeySetup(len(NodeIds))
