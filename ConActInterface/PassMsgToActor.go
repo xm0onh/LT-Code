@@ -178,9 +178,8 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 					ResponderTimerStruct := Timer.TimerStruct{}
 					ResponderTimerStruct.Duration = c.RequestResponseTimeCounter
 					ResponderTimerStruct.IsRequesterDuration = false
-					// ReqUesterIP, ErrBin := N.GetIPaddFromConn(c.NodeIdToDialConnMapRequestors[c.RequestorIDs[i]])
-					ReqUesterIP := ""
-					ErrBin := true
+					ReqUesterIP, ErrBin := N.GetIPaddFromConn(c.NodeIdToDialConnMapRequestors[c.RequestorIDs[i]])
+
 					if !ErrBin {
 						log.Fatal("Conn corruption with Requester")
 					}
