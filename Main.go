@@ -51,15 +51,12 @@ func main() {
 	//conAct.Peers= Net.Ec2IpExtractor("Role1", "Root-nodes")
 	//	conAct.RequestorIDs = Net.Ec2IpExtractor("us-east-1", "Role3", "Requestors")
 	requestorIps := Net.EC2IPsForAllRegions(regions, "Role3", "Requestors")
-	for _, requestor := range requestorIps {
-		conAct.RequestorIPs = append(conAct.RequestorIPs, requestor)
-	}
+	conAct.RequestorIPs = append(conAct.RequestorIPs, requestorIps...)
 
 	//conAct.Peers=append(conAct.Peers,conAct.Primary)
 	peers := Net.EC2IPsForAllRegions(regions, "Role1", "Root-nodes")
-	for _, peer := range peers {
-		conAct.Peers = append(conAct.Peers, peer)
-	}
+	conAct.Peers = append(conAct.Peers, peers...)
+
 	///////////////////////IDSANDIPSForRespondersANDRequestors////////
 	fmt.Println("Just before IDSANDIPSForRespondersANDRequestors!!!!!!!!!!!!!!!")
 	ResponderIDSAndIPS := Net.EC2IPsAndIDSForAllRegions(regions, "Role1", "Root-nodes")
