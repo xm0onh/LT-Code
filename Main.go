@@ -37,7 +37,7 @@ func main() {
 	//fmt.Println("Getting my Idx")
 	MyIndx := Decoding.GetIndex(MyID, NodeIds)
 	fmt.Println("Getting keys")
-	Crypt.KeySetup(len(NodeIds))
+	// Crypt.KeySetup(len(NodeIds))
 	// Crypt.Load_CommitNum(CommitLen)
 	privKey, _ := Crypt.Load_Own_keys("Priv"+strconv.Itoa(MyIndx), "Pub"+strconv.Itoa(MyIndx))
 	pubkeys := Crypt.Load_PubKeys(len(NodeIds))
