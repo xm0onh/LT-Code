@@ -89,8 +89,9 @@ func main() {
 	}
 
 	///////////// Network Init//////////////////////
-	//conAct.BlockProposalPort="18001"
-	//CommitteeSize := (len(conAct.IDs) / 3) + 3
+	// conAct.BlockProposalPort="18001"
+	// CommitteeSize := (len(conAct.IDs) / 3) + 3
+	fmt.Println("--->", os.Args)
 	numberofMacroBlocks, err := strconv.Atoi(os.Args[1])
 	if err != nil {
 		panic(err)
