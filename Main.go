@@ -48,7 +48,7 @@ func main() {
 	conAct.PrivateKey = privKey
 	/////////Loading IDs/////////
 	conAct.MyID = MyID
-	//conAct.Peers= Net.Ec2IpExtractor("Role1", "Root-nodes")
+	conAct.Peers = Net.Ec2IpExtractor("Role1", "Root-nodes", "us-east-2")
 	//	conAct.RequestorIDs = Net.Ec2IpExtractor("us-east-1", "Role3", "Requestors")
 	requestorIps := Net.EC2IPsForAllRegions(regions, "Role3", "Requestors")
 	conAct.RequestorIPs = append(conAct.RequestorIPs, requestorIps...)
