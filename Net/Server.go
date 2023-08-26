@@ -23,6 +23,7 @@ func InitListener(myAdd, BftMsgsPort string, conInterface CNI.NetworkToConActInt
 	if err != nil {
 		fmt.Println(err)
 	}
+	log.Println("server Proposal", serverProposal)
 	log.Println("listening to the port for block", BftMsgsPort)
 	log.Println("listening to the port for time duration msgs", BftMsgsPort)
 	go SyncListenerLoop(serverProposal, conInterface, CommitteeSize)
