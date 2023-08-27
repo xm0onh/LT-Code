@@ -47,6 +47,7 @@ func MsgSender(conn net.Conn, Msg E.VerifyEntity, peer, nodeID, port string, IdT
 }
 
 func DialNode(peer, port string) net.Conn {
+	fmt.Println("tcp", peer+":"+port)
 	conn, err := net.Dial("tcp", peer+":"+port)
 
 	if err != nil {
