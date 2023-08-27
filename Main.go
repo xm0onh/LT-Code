@@ -26,10 +26,10 @@ func main() {
 	gob.Register(bloom.BloomFilter{})
 
 	////////Key setup and Loading//////////
-	regions := []string{"us-east-2", "eu-central-1", "sa-east-1"}
+	regions := []string{"us-east-2", "eu-central-1"}
 	fmt.Println("Getting Node IDs")
 	NodeIds := Net.GetIDs(regions)
-	//	Crypt.KeySetup(len(NodeIds))
+	// Crypt.KeySetup(len(NodeIds))
 	fmt.Println("Node Ids for all regions are", NodeIds)
 	//	fmt.Println("Getting my ID")
 	MyID := Net.GetmyID()
@@ -114,7 +114,7 @@ func main() {
 	if errip != nil {
 		fmt.Println(errip)
 	}
-	//var ConNetInf ConActAndNetInterface.NetworkToConActInterface
+	// var ConNetInf ConActAndNetInterface.NetworkToConActInterface
 	Net.InitListener(myIPAdd, conAct.MsgsPort, conAct, CommitteeSize)
 	for indx, value := range pubkeys {
 		fmt.Println("Index in pubkeySlice is", indx)
