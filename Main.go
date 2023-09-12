@@ -124,7 +124,7 @@ func main() {
 	conAct.Decoder = Decoding.InitDecoder()
 
 	////////////////////////////Decoder//////
-
+	fmt.Println("Requestor IDs are", conAct.RequestorIDs)
 	if !Net.IfIamArequestor(conAct.RequestorIDs, MyID) {
 
 		macroblockSlice := Encoding.GenerateMacroBlocks(numberofMacroBlocks, numberOfMicroBlocks, NumberOfTransactionInEachMicroBlock)
