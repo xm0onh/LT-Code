@@ -1,10 +1,8 @@
 package RobustSolitarDistribution
 
 import (
-	"fmt"
 	"math"
 )
-
 
 func RobustSolitonDistribution(n int, m int, delta float64) []float64 {
 	pdf := make([]float64, n+1)
@@ -27,7 +25,7 @@ func RobustSolitonDistribution(n int, m int, delta float64) []float64 {
 		pdf[i] /= total
 		cdf[i] = cdf[i-1] + pdf[i]
 	}
-	fmt.Println("CDF is", cdf)
+	// fmt.Println("CDF is", cdf)
 	return cdf
 }
 
