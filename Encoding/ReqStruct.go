@@ -20,6 +20,7 @@ type Request struct {
 
 func (R Request) Verify(IdTOPbKeyMap map[string]kyber.Point) bool {
 	PubKey := IdTOPbKeyMap[R.NodeId]
+	fmt.Println("Sender Node ID during verification is:", R.NodeId)
 	fmt.Println("R.NodeId is", R.NodeId)
 	fmt.Println("Sender PubKey is", PubKey)
 	fmt.Println("R.Hash is  iHash", R.RHash)
