@@ -119,8 +119,9 @@ func main() {
 	for indx, value := range pubkeys {
 		fmt.Println("Index in pubkeySlice is", indx)
 		conAct.MapIDToPbKey[conAct.IDs[indx]] = value
-	}
 
+	}
+	fmt.Println("MapIDToPbKey is", conAct.MapIDToPbKey)
 	conAct.Decoder = Decoding.InitDecoder()
 
 	////////////////////////////Decoder//////
