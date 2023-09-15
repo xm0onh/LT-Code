@@ -26,9 +26,11 @@ func (R Request) Verify(IdTOPbKeyMap map[string]kyber.Point) bool {
 	fmt.Println("R.Sig is", R.Sig)
 
 	err := bls.Verify(bn256.NewSuite(), PubKey, R.RHash, R.Sig)
+	fmt.Println("Verification err ->", err)
 	if err == nil {
 		return true
 	}
+
 	return false
 }
 
