@@ -164,7 +164,7 @@ func (microblock MicroBlock) GenerateLubyTransformBlock(microblockSlice []MicroB
 	hash := C.CalcHash(droplet.XorMicroBlocks)
 	droplet.DropletHash = hash
 	droplet.Sig = C.SignMsg(droplet.DropletHash, priv)
-	droplet.Bloom = bloom.BloomFilter{}
+	droplet.Bloom = &bloom.BloomFilter{}
 	return droplet
 }
 
@@ -183,7 +183,13 @@ func (droplet *Droplet) xor(block MicroBlock) {
 		droplet.XorMicroBlocks = append(droplet.XorMicroBlocks, make([]byte, inc)...)
 		//droplet.XorMicroBlocks,_=xor.XORBytes(droplet.XorMicroBlocks, MicroblockinBytes)
 	}
-	droplet.XorMicroBlocks, _ = xor.XORBytes(droplet.XorMicroBlocks, MicroblockinBytes)
+	var err error
+	droplet.XorMicroBlocks, err = xor.XORBytes(droplet.XorMicroBlocks, MicroblockinBytes)
+	if err != nil {
+		fmt.Printf("Error while XORing bytes: %v\n", err)
+		return
+	}
+
 	//	fmt.Println("Droplet inside xor is", droplet)
 	//return droplet
 }
@@ -206,16 +212,16 @@ func Initializedroplet(microblockSlice []MicroBlock, nodeID string) Droplet {
 
 func GenerateBloomFilter(dropletSlice []Droplet, CommitteeSize int) []Droplet {
 	bloom := bloom.NewWithEstimates(uint(CommitteeSize), 0.0000001)
-	for _, droplete := range dropletSlice {
-		bloom.Add(droplete.DropletHash)
+	for i := range dropletSlice {
+		dropletSlice[i].Bloom = bloom // No need for & here
 	}
 
-	addBloomFilterToDropletes(dropletSlice, *bloom)
+	addBloomFilterToDropletes(dropletSlice, bloom) // No need for * here
 	return dropletSlice
 }
 
-func addBloomFilterToDropletes(dropletSlice []Droplet, bloom bloom.BloomFilter) {
-	for _, droplete := range dropletSlice {
-		droplete.Bloom = bloom
+func addBloomFilterToDropletes(dropletSlice []Droplet, bloom *bloom.BloomFilter) {
+	for i := range dropletSlice {
+		dropletSlice[i].Bloom = bloom
 	}
 }

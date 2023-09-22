@@ -22,7 +22,7 @@ type Droplet struct {
 	BlockId        int
 	Sig            []byte
 	NodeID         string
-	Bloom          bloom.BloomFilter
+	Bloom          *bloom.BloomFilter
 }
 
 //var DropletSliceMap  map[int][]Droplet
