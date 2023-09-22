@@ -27,7 +27,7 @@ func MsgSender(conn net.Conn, Msg E.VerifyEntity, peer, nodeID, port string, IdT
 	//	Encoder := gob.NewEncoder(conn)
 	enc := (*MapIdToEncoder)[nodeID]
 	err := enc.Encode(&Msg)
-	//err := encoder.Encode(&Msg)
+	// err := encoder.Encode(&Msg)
 	if err != nil {
 		fmt.Println("Encoding error is", err.Error())
 		conn.Close()

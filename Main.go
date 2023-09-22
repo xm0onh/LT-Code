@@ -181,6 +181,7 @@ func main() {
 
 			Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 		}
+		fmt.Println("the request is ", request)
 	}
 
 	idle()
