@@ -195,7 +195,7 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 	case Enc.Droplet:
 
 		v := event.Verify(c.MapIDToPbKey)
-		fmt.Println("Received Droplet is", event)
+		// fmt.Println("Received Droplet is", event)
 		fmt.Println("Droplet verification is", v)
 		strtTime := time.Now()
 		bloomVerification := event.Bloom.Test(event.DropletHash)
