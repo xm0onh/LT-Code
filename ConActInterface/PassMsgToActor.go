@@ -148,7 +148,7 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 						fmt.Println("The index of the droplete sent is", MyIndx+j*len(c.ResponderRootNodes))
 						fmt.Println("Just for test", c.DropletCounter)
 
-						N.MsgSender(c.NodeIdToDialConnMapRequestors[event.NodeId], c.Decoder.MacroBlockIDToDropletSliceMap[i-1][j], sourceIp, event.NodeId, c.MsgsPort, &c.NodeIdToDialConnMapRequestors, &c.NodeIDToEncoderMap)
+						N.MsgSender(c.NodeIdToDialConnMapRequestors[event.NodeId], c.Decoder.MacroBlockIDToDropletSliceMap[i-1][MyIndx+j*len(c.ResponderRootNodes)], sourceIp, event.NodeId, c.MsgsPort, &c.NodeIdToDialConnMapRequestors, &c.NodeIDToEncoderMap)
 						time.Sleep(20 * time.Millisecond)
 						conn := N.DialNode(sourceIp, c.MsgsPort)
 						c.NodeIdToDialConnMapRequestors[event.NodeId] = conn
