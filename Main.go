@@ -140,9 +140,9 @@ func main() {
 
 		}
 		fmt.Println("Done with Decoding!")
-		encoder := conAct.NodeIDToEncoderMap["i-03ee17fd0830515a2"]
+
 		buf := new(bytes.Buffer)
-		encoder = gob.NewEncoder(buf)
+		encoder := gob.NewEncoder(buf)
 
 		// Assuming that conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0] is of a type that can be encoded by gob.
 		err := encoder.Encode(conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0])
