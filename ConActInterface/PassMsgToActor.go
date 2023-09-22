@@ -117,7 +117,7 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		MyIndx := Decoding.GetIndex(c.MyID, c.ResponderRootNodes)
 		fmt.Println("event end Blck is", event.EndBlockId)
 		fmt.Println("event strt Blck is", event.StartBlockId)
-		fmt.Println("Macro block id", event.MacroBlkId)
+		// fmt.Println("Macro block id", event.MacroBlkId)
 		fmt.Println("NodeIdToDialConnMap is", c.NodeIdToDialConnMapRequestors)
 		fmt.Println("Source IP is", sourceIp)
 		//	fmt.Println("c.Decoder.MacroBlockIDToDropletSliceMap 2nd indx is", c.Decoder.MacroBlockIDToDropletSliceMap[2])

@@ -177,7 +177,7 @@ func main() {
 		conAct.AddEncodertoNodeIDMap(conAct.NodeIdToDialConnMapResponders)
 
 		for ID, IP := range conAct.IDToIPMPResponders {
-			fmt.Println("ID -->", ID, "IP -->", IP)
+			// fmt.Println("ID -->", ID, "IP -->", IP)
 
 			Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 		}
