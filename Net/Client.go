@@ -42,7 +42,6 @@ func MsgSender(conn net.Conn, Msg E.VerifyEntity, peer, nodeID, port string, IdT
 		fmt.Println("Creating new Connection")
 		enc := gob.NewEncoder(conn)
 		(*IdToConnMap)[nodeID] = conn
-		enc = gob.NewEncoder(conn)
 		(*MapIdToEncoder)[nodeID] = enc
 		MsgSender(conn, Msg, peer, nodeID, port, IdToConnMap, MapIdToEncoder)
 		//return enc, true
