@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"reflect"
 
 	"github.com/bits-and-blooms/bloom"
 	Con "github.com/xm0onh/LT-Code/ConActInterface"
@@ -143,7 +144,8 @@ func main() {
 
 		buf := new(bytes.Buffer)
 		encoder := gob.NewEncoder(buf)
-		fmt.Println(conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0])
+
+		fmt.Println(reflect.TypeOf(conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0]))
 		// Assuming that conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0] is of a type that can be encoded by gob.
 		err := encoder.Encode(conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0])
 		if err != nil {
