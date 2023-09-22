@@ -143,7 +143,7 @@ func main() {
 
 		buf := new(bytes.Buffer)
 		encoder := gob.NewEncoder(buf)
-
+		fmt.Println(conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0])
 		// Assuming that conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0] is of a type that can be encoded by gob.
 		err := encoder.Encode(conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0])
 		if err != nil {
