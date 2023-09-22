@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+
 	"github.com/bits-and-blooms/bloom"
 	Con "github.com/xm0onh/LT-Code/ConActInterface"
 	"github.com/xm0onh/LT-Code/Timer"
@@ -138,6 +140,16 @@ func main() {
 
 		}
 		fmt.Println("Done with Decoding!")
+		encoder := conAct.NodeIDToEncoderMap["i-03ee17fd0830515a2"]
+		buf := new(bytes.Buffer)
+		encoder = gob.NewEncoder(buf)
+
+		// Assuming that conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0] is of a type that can be encoded by gob.
+		err := encoder.Encode(conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0])
+		if err != nil {
+			fmt.Println("Encoding failed:", err)
+			return
+		}
 
 	}
 
