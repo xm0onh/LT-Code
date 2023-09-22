@@ -1,6 +1,8 @@
 package Net
 
 import (
+	"reflect"
+
 	E "github.com/xm0onh/LT-Code/Encoding"
 	//	"github.com/xm0onh/LT-Code/Timer"
 	"encoding/gob"
@@ -26,6 +28,9 @@ func MsgSender(conn net.Conn, Msg E.VerifyEntity, peer, nodeID, port string, IdT
 
 	//	Encoder := gob.NewEncoder(conn)
 	enc := (*MapIdToEncoder)[nodeID]
+	fmt.Println("Encoder is", enc)
+	fmt.Println("Encoder type is", reflect.TypeOf(enc))
+	fmt.Println("Msg type is", reflect.TypeOf(Msg))
 	err := enc.Encode(&Msg)
 	// err := encoder.Encode(&Msg)
 	if err != nil {
