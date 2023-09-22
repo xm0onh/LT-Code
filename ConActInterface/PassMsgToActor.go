@@ -115,6 +115,7 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		//Idx,_:=c.GetMyIndx()
 		//var cn NetworkToConActInterface
 		MyIndx := Decoding.GetIndex(c.MyID, c.ResponderRootNodes)
+		fmt.Println("Responser Root Node ->", c.ResponderRootNodes)
 		fmt.Println("event end Blck is", event.EndBlockId)
 		fmt.Println("event strt Blck is", event.StartBlockId)
 		// fmt.Println("Macro block id", event.MacroBlkId)
