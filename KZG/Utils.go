@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/arnaucube/kzg-commitments-study"
 	k "github.com/arnaucube/kzg-commitments-study"
 	Enc "github.com/xm0onh/LT-Code/Encoding"
 )
@@ -31,8 +32,14 @@ func GenerateKZGProof(dropletSlice []Enc.Droplet) {
 	for _, droplet := range dropletSlice {
 		hashes = append(hashes, droplet.DropletHash)
 	}
-	poly := HashesToPolynomial(hashes)
-	fmt.Println("Poly is", poly)
+	coeff := HashesToPolynomial(hashes)
+	ts, err := kzg.NewTrustedSetup(len(coeff))
+	if err != nil {
+		panic(err)
+	}
+	c := kzg.Commit(ts, coeff)
+	fmt.Println("debug c", c)
+	// fmt.Println("Poly is", poly)
 }
 
 // func Example() {
