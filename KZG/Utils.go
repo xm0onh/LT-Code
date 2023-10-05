@@ -43,6 +43,16 @@ func RandomFieldElement(modulus *big.Int) *big.Int {
 	}
 }
 
+func evaluatePolynomial(p []*big.Int, x *big.Int) *big.Int {
+	result := big.NewInt(0)
+	for i := len(p) - 1; i >= 0; i-- {
+		result.Mul(result, x)
+		result.Add(result, p[i])
+		result.Mod(result, kzg.R)
+	}
+	return result
+}
+
 func GenerateKZGProof(dropletSlice []Enc.Droplet) *bn256.G1 {
 
 	var hashes [][]byte
@@ -59,8 +69,8 @@ func GenerateKZGProof(dropletSlice []Enc.Droplet) *bn256.G1 {
 	// bHash := new(big.Int).SetBytes(dropletSlice[0].DropletHash)
 	// z := RandomFieldElement(kzg.R)
 	z := ConvertHashToFieldElement(dropletSlice[0].DropletHash)
-	y := big.NewInt(0) // bHash is a root :)
-
+	y := evaluatePolynomial(coeff, z)
+	fmt.Println("Y -->", y)
 	proof, err := kzg.EvaluationProof(ts, coeff, z, y)
 	if err != nil {
 		panic(err)
