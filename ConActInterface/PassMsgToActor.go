@@ -233,6 +233,9 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 			fmt.Println("KZG Verification is unsuccessful")
 		}
 
+	case kzg.KZGRequest:
+		fmt.Println("KZG Request is received")
+		fmt.Println(event.Z)
 	case Timer.TimerStruct:
 		if event.IsRequesterDuration == false {
 			c.CollectRespondersTime(event.Duration)
