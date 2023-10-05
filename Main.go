@@ -167,7 +167,7 @@ func main() {
 	if Net.IfIamArequestor(conAct.RequestorIDs, conAct.MyID) {
 
 		fmt.Println(" I am a requestor!")
-		request := Encoding.CreateReq(0, 8, conAct.MyID, conAct.PrivateKey)
+		request := Encoding.CreateReq(1, 8, conAct.MyID, conAct.PrivateKey)
 
 		fmt.Println("Request Sig is", request.Sig)
 		fmt.Println("Request Hash is", request.RHash)

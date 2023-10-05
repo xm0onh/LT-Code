@@ -146,7 +146,6 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 						fmt.Println("Requester nodeID is", event.NodeId)
 						fmt.Println("Requester Connection is", c.NodeIdToDialConnMapRequestors[event.NodeId])
 						fmt.Println("The index of the droplete sent is", MyIndx+j*len(c.ResponderRootNodes))
-						fmt.Println("Just for test", c.DropletCounter)
 
 						N.MsgSender(c.NodeIdToDialConnMapRequestors[event.NodeId], c.Decoder.MacroBlockIDToDropletSliceMap[i-1][MyIndx+j*len(c.ResponderRootNodes)], sourceIp, event.NodeId, c.MsgsPort, &c.NodeIdToDialConnMapRequestors, &c.NodeIDToEncoderMap)
 						time.Sleep(20 * time.Millisecond)
