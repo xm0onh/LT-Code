@@ -89,6 +89,7 @@ func Blockhandleconnection(conn net.Conn, conInterface CNI.NetworkToConActInterf
 				return
 			}
 		}
+		fmt.Println("type is", reflect.TypeOf(RecType1))
 		fmt.Println("Conn in Server.go ", conn)
 		ipaddress, ErrBin := GetIPaddFromConn(conn)
 		if !ErrBin {
