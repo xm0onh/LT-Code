@@ -78,7 +78,7 @@ func Blockhandleconnection(conn net.Conn, conInterface CNI.NetworkToConActInterf
 	for {
 
 		err := decoder.Decode(&RecType1)
-		fmt.Println("Received Block is", RecType1)
+		// fmt.Println("Received Block is", RecType1)
 		if err != nil {
 			if err.Error() == "gob: unknown type id or corrupted data" {
 				fmt.Println("Error during BftMsgshandleconnection", err)
