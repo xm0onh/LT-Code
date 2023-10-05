@@ -88,6 +88,7 @@ func Blockhandleconnection(conn net.Conn, conInterface CNI.NetworkToConActInterf
 				fmt.Println("Error during BftMsgshandleconnection", err)
 
 			} else {
+				fmt.Println("here")
 				conn.Close()
 				conn = nil
 				return
@@ -104,7 +105,6 @@ func Blockhandleconnection(conn net.Conn, conInterface CNI.NetworkToConActInterf
 		fmt.Println("Committee Size is", CommitteeSize)
 		fmt.Println("IP address is ", ipaddress)
 
-		go conInterface.PassMsgToActor(RecType2, CommitteeSize, ipaddress)
 		go conInterface.PassMsgToActor(RecType1, CommitteeSize, ipaddress)
 
 	}
