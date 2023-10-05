@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/bits-and-blooms/bloom"
 	Con "github.com/xm0onh/LT-Code/ConActInterface"
+	kzg "github.com/xm0onh/LT-Code/KZG"
 	"github.com/xm0onh/LT-Code/Timer"
 
 	"encoding/gob"
@@ -127,17 +128,18 @@ func main() {
 	////////////////////////////Decoder//////
 	fmt.Println("Requestor IDs are", conAct.RequestorIDs)
 	if !Net.IfIamArequestor(conAct.RequestorIDs, MyID) {
-
+		var dropletSlice []Encoding.Droplet
 		macroblockSlice := Encoding.GenerateMacroBlocks(numberofMacroBlocks, numberOfMicroBlocks, NumberOfTransactionInEachMicroBlock)
 		for _, value := range *macroblockSlice {
-			dropletSlice := Encoding.GenerateDropletSlice(value, numberOfMicroBlocks, numberOfMicroBlocks/2, 0.1, conAct.PrivateKey, conAct.MyID)
+			dropletSlice = Encoding.GenerateDropletSlice(value, numberOfMicroBlocks, numberOfMicroBlocks/2, 0.1, conAct.PrivateKey, conAct.MyID)
 			fmt.Println("Len Droplet Slice is", len(dropletSlice))
 			fmt.Println("Droplet hash", dropletSlice[0].DropletHash)
-			dropletSlice = Encoding.GenerateBloomFilter(dropletSlice, CommitteeSize)
+			// dropletSlice = Encoding.GenerateBloomFilter(dropletSlice, CommitteeSize)
 			fmt.Println("The value of Block ID is", value.BlockID)
 			conAct.Decoder.MacroBlockIDToDropletSliceMap[value.BlockID] = dropletSlice
 
 		}
+		kzg.GenerateKZGProof(dropletSlice)
 		fmt.Println("Done with Decoding!")
 
 		// Testing the Encoding of Droplet Slice

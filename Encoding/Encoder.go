@@ -225,7 +225,3 @@ func addBloomFilterToDropletes(dropletSlice []Droplet, bloom *bloom.BloomFilter)
 		dropletSlice[i].Bloom = bloom
 	}
 }
-
-func GenerateKZGProof(dropletSlice []Droplet) {
-
-}

@@ -1,9 +1,11 @@
 package kzg
 
 import (
+	"fmt"
 	"math/big"
 
 	k "github.com/arnaucube/kzg-commitments-study"
+	Enc "github.com/xm0onh/LT-Code/Encoding"
 )
 
 // ConvertHashToFieldElement converts the given hash to a big integer that lies within the finite field defined by R.
@@ -21,6 +23,16 @@ func HashesToPolynomial(hashes [][]byte) []*big.Int {
 	}
 
 	return coefficients
+}
+
+func GenerateKZGProof(dropletSlice []Enc.Droplet) {
+
+	var hashes [][]byte
+	for _, droplet := range dropletSlice {
+		hashes = append(hashes, droplet.DropletHash)
+	}
+	poly := HashesToPolynomial(hashes)
+	fmt.Println("Poly is", poly)
 }
 
 // func Example() {
