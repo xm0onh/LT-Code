@@ -9,6 +9,7 @@ import (
 	"reflect"
 
 	E "github.com/xm0onh/LT-Code/Encoding"
+	kzg "github.com/xm0onh/LT-Code/KZG"
 
 	//C "github.com/xm0onh/LT-Code/ConActInterface"
 	CNI "github.com/xm0onh/LT-Code/ConActAndNetInterface"
@@ -72,14 +73,16 @@ func Blockhandleconnection(conn net.Conn, conInterface CNI.NetworkToConActInterf
 
 	//	fmt.Println("inside Blockhandleconnection decoder")
 	var RecType1 E.VerifyEntity
+	var RecType2 kzg.KZGZSender
 	decoder := gob.NewDecoder(conn)
 	//////To be done: Read deadline
 	for {
 
 		err := decoder.Decode(&RecType1)
-
+		err2 := decoder.Decode(&RecType2)
 		// fmt.Println("Received Block is", RecType1)
-		if err != nil {
+		fmt.Println("type is", reflect.TypeOf(RecType2))
+		if err != nil || err2 != nil {
 			if err.Error() == "gob: unknown type id or corrupted data" {
 				fmt.Println("Error during BftMsgshandleconnection", err)
 
@@ -91,6 +94,7 @@ func Blockhandleconnection(conn net.Conn, conInterface CNI.NetworkToConActInterf
 			}
 		}
 		fmt.Println("type is", reflect.TypeOf(RecType1))
+		fmt.Println("type is", reflect.TypeOf(RecType2))
 
 		fmt.Println("Conn in Server.go ", conn)
 		ipaddress, ErrBin := GetIPaddFromConn(conn)
@@ -100,6 +104,7 @@ func Blockhandleconnection(conn net.Conn, conInterface CNI.NetworkToConActInterf
 		//		fmt.Println("Received Msg", RecType1)
 		fmt.Println("Committee Size is", CommitteeSize)
 		fmt.Println("IP address is ", ipaddress)
+		go conInterface.PassMsgToActor(RecType2, CommitteeSize, ipaddress)
 
 		go conInterface.PassMsgToActor(RecType1, CommitteeSize, ipaddress)
 
