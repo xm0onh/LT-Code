@@ -11,12 +11,12 @@ type KZGStatus struct {
 }
 
 type KZGRequest struct {
-	z *big.Int
+	Z *big.Int
 }
 
 func CreateKZGRequest() *KZGRequest {
 	return &KZGRequest{
-		z: RandomFieldElement(),
+		Z: RandomFieldElement(),
 	}
 }
 func (T KZGStatus) Verify(IdTOPbKeyMap map[string]kyber.Point) bool {
@@ -24,5 +24,5 @@ func (T KZGStatus) Verify(IdTOPbKeyMap map[string]kyber.Point) bool {
 }
 
 func (K KZGRequest) SendZ() *big.Int {
-	return K.z
+	return K.Z
 }
