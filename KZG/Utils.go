@@ -57,7 +57,8 @@ func GenerateKZGProof(dropletSlice []Enc.Droplet) *bn256.G1 {
 	c := kzg.Commit(ts, coeff)
 	fmt.Println("KZG commitment", c)
 	// bHash := new(big.Int).SetBytes(dropletSlice[0].DropletHash)
-	z := RandomFieldElement(kzg.R)
+	// z := RandomFieldElement(kzg.R)
+	z := ConvertHashToFieldElement(dropletSlice[0].DropletHash)
 	y := big.NewInt(0) // bHash is a root :)
 
 	proof, err := kzg.EvaluationProof(ts, coeff, z, y)
