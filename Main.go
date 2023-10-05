@@ -180,6 +180,7 @@ func main() {
 				fmt.Println("error during KZG", err.Error())
 			} else {
 				KZGStat.Status = kzg.VerifyKZGProof(TS, comm, proof, z, y)
+				fmt.Println("KZG Status is", KZGStat.Status)
 
 			}
 		}
