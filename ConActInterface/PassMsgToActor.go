@@ -8,6 +8,7 @@ import (
 
 	"github.com/xm0onh/LT-Code/Decoding"
 	Enc "github.com/xm0onh/LT-Code/Encoding"
+	kzg "github.com/xm0onh/LT-Code/KZG"
 	N "github.com/xm0onh/LT-Code/Net"
 	"github.com/xm0onh/LT-Code/Timer"
 
@@ -138,17 +139,18 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 			}
 
 			if event.EndBlockId > event.StartBlockId {
-				rows := len(c.Decoder.MacroBlockIDToDropletSliceMap)
-				fmt.Println("Number of rows:", rows)
+				/* Dimension of MacroBlockIDToDropletSlice
+				// rows := len(c.Decoder.MacroBlockIDToDropletSliceMap)
+				// fmt.Println("Number of rows:", rows)
 
-				// Assuming the 2D slice is uniform (every row has the same number of columns)
-				if rows > 0 {
-					columns := len(c.Decoder.MacroBlockIDToDropletSliceMap[0])
-					fmt.Println("Number of columns:", columns)
-				} else {
-					fmt.Println("No columns since there are no rows.")
-				}
-
+				// // Assuming the 2D slice is uniform (every row has the same number of columns)
+				// if rows > 0 {
+				// 	columns := len(c.Decoder.MacroBlockIDToDropletSliceMap[0])
+				// 	fmt.Println("Number of columns:", columns)
+				// } else {
+				// 	fmt.Println("No columns since there are no rows.")
+				// }
+				*/
 				for i := event.StartBlockId; i <= event.EndBlockId; i++ {
 					fmt.Println("Sending Each Droplet with seq i", i)
 					/////How many droplets each node has to send (depends on the max value of j)/////////
@@ -220,10 +222,17 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		if c.DropletCounter == int64(committeeSize) {
 			fmt.Println("BloomFilter Verification Time for a single block is", c.BloomFilterVerificationTime)
 		}
-	//	c.AddAndSendTimer(event)
-	//case D.Block:
-	//	c.verifyBlockAndSendVote(event)
-	//View Change case need to be done
+		//	c.AddAndSendTimer(event)
+		//case D.Block:
+		//	c.verifyBlockAndSendVote(event)
+		//View Change case need to be done
+	case kzg.KZGStruct:
+		if event.Status {
+			fmt.Println("KZG Verification is successful")
+		} else {
+			fmt.Println("KZG Verification is unsuccessful")
+		}
+
 	case Timer.TimerStruct:
 		if event.IsRequesterDuration == false {
 			c.CollectRespondersTime(event.Duration)

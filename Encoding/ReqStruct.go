@@ -16,8 +16,27 @@ type Request struct {
 	NodeId       string
 	RHash        []byte
 	Sig          []byte
+	KZG          bool
 }
 
+// type KZGRequest struct {
+// 	Verify bool
+// }
+
+// func SetStatus(status bool) *KZGRequest {
+// 	return &KZGRequest{
+// 		Verify: status,
+// 	}
+
+// }
+
+// func (k *KZGRequest) VerifyKZG() bool {
+// 	return k.Verify
+// }
+
+func (R *Request) VerifyKZG() bool {
+	return R.KZG
+}
 func (R Request) Verify(IdTOPbKeyMap map[string]kyber.Point) bool {
 	PubKey := IdTOPbKeyMap[R.NodeId]
 	fmt.Println("Sender Node ID during verification is:", R.NodeId)

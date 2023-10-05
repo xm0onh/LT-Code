@@ -53,7 +53,7 @@ func evaluatePolynomial(p []*big.Int, x *big.Int) *big.Int {
 	return result
 }
 
-func InitKZG(dropletSlice []Enc.Droplet) (*bn256.G1, *big.Int, *big.Int) {
+func InitKZG(dropletSlice []Enc.Droplet) (*k.TrustedSetup, *bn256.G1, *big.Int, *big.Int, *bn256.G1, error) {
 
 	var hashes [][]byte
 	for _, droplet := range dropletSlice {
@@ -70,19 +70,11 @@ func InitKZG(dropletSlice []Enc.Droplet) (*bn256.G1, *big.Int, *big.Int) {
 	// z := ConvertHashToFieldElement(dropletSlice[0].DropletHash)
 	y := evaluatePolynomial(coeff, z)
 	fmt.Println("Y -->", y)
+	proof, err := kzg.EvaluationProof(ts, coeff, z, y)
 
-	return c, z, y
+	return ts, c, z, y, proof, err
 }
 
-func GenerateKZGProof(TS *k.TrustedSetup, coeff []*big.Int, z *big.Int, y *big.Int) (*bn256.G1, error) {
-	proof, err := kzg.EvaluationProof(TS, coeff, z, y)
-	if err != nil {
-		return nil, err
-	}
-	return proof, nil
-
-}
-
-func VerifyKZGProof(TS k.TrustedSetup, commit *bn256.G1, proof *bn256.G1, z, y *big.Int) bool {
-	return kzg.Verify(&TS, commit, proof, z, y)
+func VerifyKZGProof(TS *k.TrustedSetup, commit *bn256.G1, proof *bn256.G1, z, y *big.Int) bool {
+	return kzg.Verify(TS, commit, proof, z, y)
 }
