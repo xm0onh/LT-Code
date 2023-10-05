@@ -1,6 +1,7 @@
 package kzg
 
 import (
+	"crypto/rand"
 	"fmt"
 	"math/big"
 
@@ -27,6 +28,21 @@ func HashesToPolynomial(hashes [][]byte) []*big.Int {
 	return coefficients
 }
 
+func RandomFieldElement(modulus *big.Int) *big.Int {
+	z := new(big.Int)
+	for {
+		b := make([]byte, (modulus.BitLen()+7)/8) // Number of bytes needed to represent the modulus
+		_, err := rand.Read(b)
+		if err != nil {
+			panic(err)
+		}
+		z.SetBytes(b)
+		if z.Cmp(modulus) < 0 {
+			return z
+		}
+	}
+}
+
 func GenerateKZGProof(dropletSlice []Enc.Droplet) *bn256.G1 {
 
 	var hashes [][]byte
@@ -40,8 +56,8 @@ func GenerateKZGProof(dropletSlice []Enc.Droplet) *bn256.G1 {
 	}
 	c := kzg.Commit(ts, coeff)
 	fmt.Println("KZG commitment", c)
-	bHash := new(big.Int).SetBytes(dropletSlice[0].DropletHash)
-	z := bHash
+	// bHash := new(big.Int).SetBytes(dropletSlice[0].DropletHash)
+	z := RandomFieldElement(kzg.R)
 	y := big.NewInt(0) // bHash is a root :)
 
 	proof, err := kzg.EvaluationProof(ts, coeff, z, y)
