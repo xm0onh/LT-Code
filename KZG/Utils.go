@@ -31,7 +31,7 @@ func HashesToPolynomial(hashes [][]byte) []*big.Int {
 func RandomFieldElement(modulus *big.Int) *big.Int {
 	z := new(big.Int)
 	for {
-		b := make([]byte, (modulus.BitLen()+7)/8) // Number of bytes needed to represent the modulus
+		b := make([]byte, (modulus.BitLen()+7)/8)
 		_, err := rand.Read(b)
 		if err != nil {
 			panic(err)
@@ -67,8 +67,8 @@ func GenerateKZGProof(dropletSlice []Enc.Droplet) *bn256.G1 {
 	c := kzg.Commit(ts, coeff)
 	fmt.Println("KZG commitment", c)
 	// bHash := new(big.Int).SetBytes(dropletSlice[0].DropletHash)
-	// z := RandomFieldElement(kzg.R)
-	z := ConvertHashToFieldElement(dropletSlice[0].DropletHash)
+	z := RandomFieldElement(kzg.R)
+	// z := ConvertHashToFieldElement(dropletSlice[0].DropletHash)
 	y := evaluatePolynomial(coeff, z)
 	fmt.Println("Y -->", y)
 	proof, err := kzg.EvaluationProof(ts, coeff, z, y)
