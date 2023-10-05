@@ -138,6 +138,17 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 			}
 
 			if event.EndBlockId > event.StartBlockId {
+				rows := len(c.Decoder.MacroBlockIDToDropletSliceMap)
+				fmt.Println("Number of rows:", rows)
+
+				// Assuming the 2D slice is uniform (every row has the same number of columns)
+				if rows > 0 {
+					columns := len(c.Decoder.MacroBlockIDToDropletSliceMap[0])
+					fmt.Println("Number of columns:", columns)
+				} else {
+					fmt.Println("No columns since there are no rows.")
+				}
+
 				for i := event.StartBlockId; i <= event.EndBlockId; i++ {
 					fmt.Println("Sending Each Droplet with seq i", i)
 					/////How many droplets each node has to send (depends on the max value of j)/////////
