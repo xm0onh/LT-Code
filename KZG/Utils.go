@@ -6,6 +6,7 @@ import (
 
 	"github.com/arnaucube/kzg-commitments-study"
 	k "github.com/arnaucube/kzg-commitments-study"
+	bn256 "github.com/ethereum/go-ethereum/crypto/bn256/cloudflare"
 	Enc "github.com/xm0onh/LT-Code/Encoding"
 )
 
@@ -26,7 +27,7 @@ func HashesToPolynomial(hashes [][]byte) []*big.Int {
 	return coefficients
 }
 
-func GenerateKZGProof(dropletSlice []Enc.Droplet) {
+func GenerateKZGProof(dropletSlice []Enc.Droplet) *bn256.G1 {
 
 	var hashes [][]byte
 	for _, droplet := range dropletSlice {
@@ -38,9 +39,31 @@ func GenerateKZGProof(dropletSlice []Enc.Droplet) {
 		panic(err)
 	}
 	c := kzg.Commit(ts, coeff)
-	fmt.Println("debug c", c)
+	fmt.Println("KZG commitment", c)
+	bHash := new(big.Int).SetBytes(dropletSlice[0].DropletHash)
+	z := bHash
+	y := big.NewInt(0) // bHash is a root :)
+
+	proof, err := kzg.EvaluationProof(ts, coeff, z, y)
+	if err != nil {
+		panic(err)
+	}
+
+	v := kzg.Verify(ts, c, proof, z, y)
+	fmt.Println("debug v", v)
+	if v != true {
+		panic("NOT VERIFIED")
+	}
+	return c
 	// fmt.Println("Poly is", poly)
 }
+
+// func GenerateSampleData(dropletSlice []Enc.Droplet) {
+// 	var hashes [][]byte
+// 	for _, droplet := range dropletSlice {
+// 		hashes = append(hashes, droplet.DropletHash)
+// 	}
+// }
 
 // func Example() {
 // 	file1Content := []byte("file1")
