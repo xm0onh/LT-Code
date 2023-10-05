@@ -226,7 +226,7 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		//case D.Block:
 		//	c.verifyBlockAndSendVote(event)
 		//View Change case need to be done
-	case kzg.KZGStatus:
+	case *kzg.KZGStatus:
 		if event.Status {
 			fmt.Println("KZG Verification is successful")
 		} else {
