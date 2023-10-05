@@ -4,6 +4,8 @@ import (
 	"reflect"
 
 	E "github.com/xm0onh/LT-Code/Encoding"
+	kzg "github.com/xm0onh/LT-Code/KZG"
+
 	//	"github.com/xm0onh/LT-Code/Timer"
 	"encoding/gob"
 	"fmt"
@@ -50,12 +52,13 @@ func MsgSender(conn net.Conn, Msg E.VerifyEntity, peer, nodeID, port string, IdT
 	//return enc, false
 }
 
-func KZGZSender(conn net.Conn, Z E.KZGZSender, peer, nodeID, port string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
+func KZGZSender(conn net.Conn, Z kzg.KZGZSender, peer, nodeID, port string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
 	enc := (*MapIdToEncoder)[nodeID]
 	// fmt.Println("Encoder is", enc)
 	// fmt.Println("Encoder type is", reflect.TypeOf(enc))
 	fmt.Println("Msg type is", reflect.TypeOf(Z))
 	err := enc.Encode(&Z)
+	fmt.Println(err)
 	// err := encoder.Encode(&Msg)
 	if err != nil {
 		fmt.Println("Encoding error is", err.Error())

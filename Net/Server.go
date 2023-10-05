@@ -72,9 +72,6 @@ func Blockhandleconnection(conn net.Conn, conInterface CNI.NetworkToConActInterf
 
 	//	fmt.Println("inside Blockhandleconnection decoder")
 	var RecType1 E.VerifyEntity
-
-	fmt.Println("Checking for the error about droplet types", reflect.TypeOf(RecType1))
-
 	decoder := gob.NewDecoder(conn)
 	//////To be done: Read deadline
 	for {
