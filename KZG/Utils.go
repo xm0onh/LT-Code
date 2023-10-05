@@ -53,7 +53,7 @@ func evaluatePolynomial(p []*big.Int, x *big.Int) *big.Int {
 	return result
 }
 
-func GenerateKZGProof(dropletSlice []Enc.Droplet) *bn256.G1 {
+func InitKZG(dropletSlice []Enc.Droplet) (*bn256.G1, *big.Int, *big.Int) {
 
 	var hashes [][]byte
 	for _, droplet := range dropletSlice {
@@ -66,48 +66,23 @@ func GenerateKZGProof(dropletSlice []Enc.Droplet) *bn256.G1 {
 	}
 	c := kzg.Commit(ts, coeff)
 	fmt.Println("KZG commitment", c)
-	// bHash := new(big.Int).SetBytes(dropletSlice[0].DropletHash)
 	z := RandomFieldElement(kzg.R)
 	// z := ConvertHashToFieldElement(dropletSlice[0].DropletHash)
 	y := evaluatePolynomial(coeff, z)
 	fmt.Println("Y -->", y)
-	proof, err := kzg.EvaluationProof(ts, coeff, z, y)
-	if err != nil {
-		panic(err)
-	}
 
-	v := kzg.Verify(ts, c, proof, z, y)
-	fmt.Println("debug v", v)
-	if v != true {
-		panic("NOT VERIFIED")
-	}
-	return c
-	// fmt.Println("Poly is", poly)
+	return c, z, y
 }
 
-// func GenerateSampleData(dropletSlice []Enc.Droplet) {
-// 	var hashes [][]byte
-// 	for _, droplet := range dropletSlice {
-// 		hashes = append(hashes, droplet.DropletHash)
-// 	}
-// }
+func GenerateKZGProof(TS *k.TrustedSetup, coeff []*big.Int, z *big.Int, y *big.Int) (*bn256.G1, error) {
+	proof, err := kzg.EvaluationProof(TS, coeff, z, y)
+	if err != nil {
+		return nil, err
+	}
+	return proof, nil
 
-// func Example() {
-// 	file1Content := []byte("file1")
-// 	file2Content := []byte("file2")
+}
 
-// 	// Compute their SHA-256 hashes.
-// 	hash1 := sha256.Sum256(file1Content)
-// 	hash2 := sha256.Sum256(file2Content)
-// 	fmt.Println(hash1)
-// 	fmt.Println(hash2)
-// 	// Convert the hashes to a polynomial.
-// 	polynomial := HashesToPolynomial([][]byte{hash1[:], hash2[:]})
-
-// 	// Print the polynomial.
-// 	for _, coeff := range polynomial {
-// 		// This will print each coefficient of the polynomial.
-// 		// In this case, it'll be the representation of the hash values of file1 and file2 respectively.
-// 		println(coeff.String())
-// 	}
-// }
+func VerifyKZGProof(TS k.TrustedSetup, commit *bn256.G1, proof *bn256.G1, z, y *big.Int) bool {
+	return kzg.Verify(&TS, commit, proof, z, y)
+}

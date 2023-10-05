@@ -4,8 +4,6 @@ import (
 	//"github.com/xm0onh/LT-Code/Decoding"
 	"bytes"
 
-	"github.com/bits-and-blooms/bloom"
-
 	//"crypto/sha256"
 	"encoding/json"
 	"fmt"
@@ -164,7 +162,7 @@ func (microblock MicroBlock) GenerateLubyTransformBlock(microblockSlice []MicroB
 	hash := C.CalcHash(droplet.XorMicroBlocks)
 	droplet.DropletHash = hash
 	droplet.Sig = C.SignMsg(droplet.DropletHash, priv)
-	droplet.Bloom = &bloom.BloomFilter{}
+	// droplet.Bloom = &bloom.BloomFilter{}
 	return droplet
 }
 
@@ -210,18 +208,18 @@ func Initializedroplet(microblockSlice []MicroBlock, nodeID string) Droplet {
 
 }
 
-func GenerateBloomFilter(dropletSlice []Droplet, CommitteeSize int) []Droplet {
-	bloom := bloom.NewWithEstimates(uint(CommitteeSize), 0.0000001)
-	for i := range dropletSlice {
-		dropletSlice[i].Bloom = bloom // No need for & here
-	}
+// func GenerateBloomFilter(dropletSlice []Droplet, CommitteeSize int) []Droplet {
+// 	bloom := bloom.NewWithEstimates(uint(CommitteeSize), 0.0000001)
+// 	for i := range dropletSlice {
+// 		dropletSlice[i].Bloom = bloom // No need for & here
+// 	}
 
-	addBloomFilterToDropletes(dropletSlice, bloom) // No need for * here
-	return dropletSlice
-}
+// 	addBloomFilterToDropletes(dropletSlice, bloom) // No need for * here
+// 	return dropletSlice
+// }
 
-func addBloomFilterToDropletes(dropletSlice []Droplet, bloom *bloom.BloomFilter) {
-	for i := range dropletSlice {
-		dropletSlice[i].Bloom = bloom
-	}
-}
+// func addBloomFilterToDropletes(dropletSlice []Droplet, bloom *bloom.BloomFilter) {
+// 	for i := range dropletSlice {
+// 		dropletSlice[i].Bloom = bloom
+// 	}
+// }

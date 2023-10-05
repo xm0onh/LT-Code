@@ -139,20 +139,21 @@ func main() {
 			conAct.Decoder.MacroBlockIDToDropletSliceMap[value.BlockID] = dropletSlice
 
 		}
-		kzg.GenerateKZGProof(dropletSlice)
+		kzg.InitKZG(dropletSlice)
 		fmt.Println("Done with Decoding!")
+		/*
+			// Testing the Encoding of Droplet Slice
+			// buf := new(bytes.Buffer)
+			// encoder := gob.NewEncoder(buf)
 
-		// Testing the Encoding of Droplet Slice
-		// buf := new(bytes.Buffer)
-		// encoder := gob.NewEncoder(buf)
-
-		// fmt.Println(reflect.TypeOf(conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0]))
-		// // Assuming that conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0] is of a type that can be encoded by gob.
-		// err := encoder.Encode(conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0])
-		// if err != nil {
-		// 	fmt.Println("Encoding failed:", err)
-		// 	return
-		// }
+			// fmt.Println(reflect.TypeOf(conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0]))
+			// // Assuming that conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0] is of a type that can be encoded by gob.
+			// err := encoder.Encode(conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0])
+			// if err != nil {
+			// 	fmt.Println("Encoding failed:", err)
+			// 	return
+			// }
+		*/
 
 	}
 

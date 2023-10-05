@@ -1,7 +1,6 @@
 package Encoding
 
 import (
-	"github.com/bits-and-blooms/bloom"
 	"go.dedis.ch/kyber/v3"
 	bn256 "go.dedis.ch/kyber/v3/pairing/bn256"
 	"go.dedis.ch/kyber/v3/sign/bls"
@@ -22,7 +21,7 @@ type Droplet struct {
 	BlockId        int
 	Sig            []byte
 	NodeID         string
-	Bloom          *bloom.BloomFilter
+	// Bloom          *bloom.BloomFilter
 }
 
 //var DropletSliceMap  map[int][]Droplet
