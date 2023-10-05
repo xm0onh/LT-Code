@@ -1,6 +1,8 @@
 package Net
 
 import (
+	"reflect"
+
 	E "github.com/xm0onh/LT-Code/Encoding"
 	//	"github.com/xm0onh/LT-Code/Timer"
 	"encoding/gob"
@@ -52,7 +54,7 @@ func KZGZSender(conn net.Conn, Z E.KZGZSender, peer, nodeID, port string, IdToCo
 	enc := (*MapIdToEncoder)[nodeID]
 	// fmt.Println("Encoder is", enc)
 	// fmt.Println("Encoder type is", reflect.TypeOf(enc))
-	// fmt.Println("Msg type is", reflect.TypeOf(Msg))
+	fmt.Println("Msg type is", reflect.TypeOf(Z))
 	err := enc.Encode(&Z)
 	// err := encoder.Encode(&Msg)
 	if err != nil {
