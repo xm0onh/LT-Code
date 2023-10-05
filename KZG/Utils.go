@@ -28,7 +28,8 @@ func HashesToPolynomial(hashes [][]byte) []*big.Int {
 	return coefficients
 }
 
-func RandomFieldElement(modulus *big.Int) *big.Int {
+func RandomFieldElement() *big.Int {
+	modulus := k.R
 	z := new(big.Int)
 	for {
 		b := make([]byte, (modulus.BitLen()+7)/8)
@@ -66,7 +67,7 @@ func InitKZG(dropletSlice []Enc.Droplet) (*k.TrustedSetup, *bn256.G1, *big.Int, 
 	}
 	c := kzg.Commit(ts, coeff)
 	fmt.Println("KZG commitment", c)
-	z := RandomFieldElement(kzg.R)
+	z := RandomFieldElement()
 	// z := ConvertHashToFieldElement(dropletSlice[0].DropletHash)
 	y := evaluatePolynomial(coeff, z)
 	fmt.Println("Y -->", y)

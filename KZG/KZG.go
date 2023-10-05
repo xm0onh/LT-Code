@@ -1,11 +1,28 @@
 package kzg
 
-import "go.dedis.ch/kyber/v3"
+import (
+	"math/big"
 
-type KZGStruct struct {
+	"go.dedis.ch/kyber/v3"
+)
+
+type KZGStatus struct {
 	Status bool
 }
 
-func (T KZGStruct) Verify(IdTOPbKeyMap map[string]kyber.Point) bool {
+type KZGRequest struct {
+	z *big.Int
+}
+
+func CreateKZGRequest() *KZGRequest {
+	return &KZGRequest{
+		z: RandomFieldElement(),
+	}
+}
+func (T KZGStatus) Verify(IdTOPbKeyMap map[string]kyber.Point) bool {
 	return T.Status
+}
+
+func (K KZGRequest) SendZ() *big.Int {
+	return K.z
 }

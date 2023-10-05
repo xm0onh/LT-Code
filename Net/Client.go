@@ -48,6 +48,30 @@ func MsgSender(conn net.Conn, Msg E.VerifyEntity, peer, nodeID, port string, IdT
 	//return enc, false
 }
 
+func KZGZSender(conn net.Conn, Z E.KZGZSender, peer, nodeID, port string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
+	enc := (*MapIdToEncoder)[nodeID]
+	// fmt.Println("Encoder is", enc)
+	// fmt.Println("Encoder type is", reflect.TypeOf(enc))
+	// fmt.Println("Msg type is", reflect.TypeOf(Msg))
+	err := enc.Encode(&Z)
+	// err := encoder.Encode(&Msg)
+	if err != nil {
+		fmt.Println("Encoding error is", err.Error())
+		conn.Close()
+		conn = nil
+		time.Sleep(300 * time.Millisecond)
+		conn = DialNode(peer, port)
+		fmt.Println("Creating new Connection")
+		enc := gob.NewEncoder(conn)
+		(*IdToConnMap)[nodeID] = conn
+		(*MapIdToEncoder)[nodeID] = enc
+		KZGZSender(conn, Z, peer, nodeID, port, IdToConnMap, MapIdToEncoder)
+		//return enc, true
+	}
+	//	conn.Close()
+	//return enc, false
+}
+
 func DialNode(peer, port string) net.Conn {
 	fmt.Println("tcp", peer+":"+port)
 	conn, err := net.Dial("tcp", peer+":"+port)
