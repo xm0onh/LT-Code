@@ -3,13 +3,13 @@ package kzg
 import (
 	"math/big"
 
-	kzg "github.com/arnaucube/kzg-commitments-study"
+	k "github.com/arnaucube/kzg-commitments-study"
 )
 
 // ConvertHashToFieldElement converts the given hash to a big integer that lies within the finite field defined by R.
 func ConvertHashToFieldElement(hash []byte) *big.Int {
 	hInt := new(big.Int).SetBytes(hash)
-	return hInt.Mod(hInt, kzg.R)
+	return hInt.Mod(hInt, k.R)
 }
 
 // HashesToPolynomial converts an array of file hashes into a polynomial.

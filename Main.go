@@ -132,6 +132,7 @@ func main() {
 		for _, value := range *macroblockSlice {
 			dropletSlice := Encoding.GenerateDropletSlice(value, numberOfMicroBlocks, numberOfMicroBlocks/2, 0.1, conAct.PrivateKey, conAct.MyID)
 			fmt.Println("Len Droplet Slice is", len(dropletSlice))
+			fmt.Println("droplet slice", dropletSlice)
 			dropletSlice = Encoding.GenerateBloomFilter(dropletSlice, CommitteeSize)
 			fmt.Println("The value of Block ID is", value.BlockID)
 			conAct.Decoder.MacroBlockIDToDropletSliceMap[value.BlockID] = dropletSlice
