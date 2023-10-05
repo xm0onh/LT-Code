@@ -25,6 +25,7 @@ func main() {
 	gob.Register(Encoding.Request{})
 	gob.Register(Timer.TimerStruct{})
 	gob.Register(kzg.KZGStatus{})
+	gob.Register(kzg.KZGRequest{})
 	gob.Register(bloom.BloomFilter{})
 
 	////////Key setup and Loading//////////
