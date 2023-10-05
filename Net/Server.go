@@ -72,18 +72,17 @@ func Blockhandleconnection(conn net.Conn, conInterface CNI.NetworkToConActInterf
 
 	//	fmt.Println("inside Blockhandleconnection decoder")
 	var RecType1 E.VerifyEntity
-	var RecType2 E.KZGZSender
+
 	fmt.Println("Checking for the error about droplet types", reflect.TypeOf(RecType1))
-	fmt.Println("Checking for the error about KZG types", reflect.TypeOf(RecType2))
 
 	decoder := gob.NewDecoder(conn)
 	//////To be done: Read deadline
 	for {
 
 		err := decoder.Decode(&RecType1)
-		err2 := decoder.Decode(&RecType1)
+
 		// fmt.Println("Received Block is", RecType1)
-		if (err != nil) || (err2 != nil) {
+		if err != nil {
 			if err.Error() == "gob: unknown type id or corrupted data" {
 				fmt.Println("Error during BftMsgshandleconnection", err)
 
@@ -95,7 +94,7 @@ func Blockhandleconnection(conn net.Conn, conInterface CNI.NetworkToConActInterf
 			}
 		}
 		fmt.Println("type is", reflect.TypeOf(RecType1))
-		fmt.Println("type is", reflect.TypeOf(RecType2))
+
 		fmt.Println("Conn in Server.go ", conn)
 		ipaddress, ErrBin := GetIPaddFromConn(conn)
 		if !ErrBin {
