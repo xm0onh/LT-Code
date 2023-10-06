@@ -241,6 +241,7 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		c.KZGSetup.GenerateProof()
 		kzgVerfyStruct := kzg.CreateKZGVerifier(c.KZGSetup.TS, c.KZGSetup.Commitment, *c.KZGSetup.Y, *c.KZGSetup.Z, c.KZGSetup.Proof)
 		fmt.Println("ID TO IP MP Requesters is", c.IDToIPMPRequesters)
+		fmt.Println("Verification:", kzgVerfyStruct.VerifyKZGProof())
 		if len(c.NodeIdToDialConnMapRequestors) == 0 {
 			for ID, IP := range c.IDToIPMPRequesters {
 				conn := N.DialNode(IP, c.MsgsPort)
