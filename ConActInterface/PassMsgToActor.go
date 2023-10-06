@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 
-	k "github.com/arnaucube/kzg-commitments-study"
 	"github.com/xm0onh/LT-Code/Decoding"
 	Enc "github.com/xm0onh/LT-Code/Encoding"
 	kzg "github.com/xm0onh/LT-Code/KZG"
@@ -240,10 +239,25 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		c.KZGSetup.Z = event.Z
 		c.KZGSetup.Y = Y
 		c.KZGSetup.GenerateProof()
-		kzgVerfyStruct := kzg.CreateKZGVerifier(c.KZGSetup.TS, c.KZGSetup.Commitment, *c.KZGSetup.Y, *c.KZGSetup.Z, c.KZGSetup.Proof)
+		kzgVerfyStruct := kzg.CreateKZGVerifier(c.KZGSetup.TS, *c.KZGSetup.Commitment, *c.KZGSetup.Y, *c.KZGSetup.Z, *c.KZGSetup.Proof)
 		fmt.Println("ID TO IP MP Requesters is", c.IDToIPMPRequesters)
-		s := k.Verify(&c.KZGSetup.TS, &c.KZGSetup.Commitment, &c.KZGSetup.Proof, c.KZGSetup.Z, c.KZGSetup.Y)
-		fmt.Println("S-->", s)
+		if c.KZGSetup.TS.Tau1 == nil || c.KZGSetup.TS.Tau2 == nil {
+			fmt.Println("TS is nil")
+		}
+		if c.KZGSetup.Commitment == nil {
+			fmt.Println("Commitment is nil")
+		}
+		if c.KZGSetup.Y == nil {
+			fmt.Println("Y is nil")
+		}
+		if c.KZGSetup.Z == nil {
+			fmt.Println("Z is nil")
+		}
+		if c.KZGSetup.Proof == nil {
+			fmt.Println("Proof is nil")
+		}
+		// s := k.Verify(&c.KZGSetup.TS, &c.KZGSetup.Commitment, &c.KZGSetup.Proof, c.KZGSetup.Z, c.KZGSetup.Y)
+		// fmt.Println("S-->", s)
 		// fmt.Println("Verification:", kzgVerfyStruct.VerifyKZGProof())
 		if len(c.NodeIdToDialConnMapRequestors) == 0 {
 			for ID, IP := range c.IDToIPMPRequesters {

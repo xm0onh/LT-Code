@@ -13,9 +13,9 @@ import (
 
 type KZGSetup struct {
 	TS         k.TrustedSetup
-	Commitment bn256.G1
+	Commitment *bn256.G1
 	Coeff      []*big.Int
-	Proof      bn256.G1
+	Proof      *bn256.G1
 	Z          *big.Int
 	Y          *big.Int
 }
@@ -82,7 +82,7 @@ func InitKZG(dropletSlice []Enc.Droplet) *KZGSetup {
 
 	return &KZGSetup{
 		TS:         *ts,
-		Commitment: *c,
+		Commitment: c,
 		Coeff:      coeff,
 	}
 }
@@ -92,5 +92,5 @@ func (K KZGSetup) GenerateProof() {
 	if err != nil {
 		panic(err)
 	}
-	K.Proof = *proof
+	K.Proof = proof
 }
