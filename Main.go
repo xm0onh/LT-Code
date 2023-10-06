@@ -181,6 +181,8 @@ func main() {
 
 		for ID, IP := range conAct.IDToIPMPResponders {
 			Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+			<-conAct.KZGVerficationStatus
+			fmt.Println("Test after Verification")
 			// Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 		}
 		fmt.Println("the request is ", request)

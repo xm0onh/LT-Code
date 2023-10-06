@@ -67,6 +67,7 @@ type ConActor struct {
 	NodeIDToEncoderMap          map[string]*gob.Encoder
 	KZGSetup                    kzg.KZGSetup
 	BloomFilterVerificationTime int64
+	KZGVerficationStatus        chan bool
 }
 
 func CreateConActor(mapSize int, privKey kyber.Scalar) *ConActor {
@@ -279,6 +280,7 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		fmt.Println("KZG Verify is received")
 		v := event.VerifyKZGProof()
 		if v {
+			c.KZGVerficationStatus <- true
 			fmt.Println("KZG Verification is successful")
 		} else {
 			fmt.Println("KZG Verification is unsuccessful")
