@@ -2,6 +2,7 @@ package Net
 
 import (
 	"math/big"
+	"reflect"
 
 	k "github.com/arnaucube/kzg-commitments-study"
 	bn256 "github.com/ethereum/go-ethereum/crypto/bn256/cloudflare"
@@ -107,12 +108,14 @@ func KZGZVerifier(conn net.Conn, Z kzg.KZGVerifier, peer, nodeID, port string, I
 	enc := (*MapIdToEncoder)[nodeID]
 	dataType := "KZGZVerifier"
 	err := enc.Encode(&dataType)
-	realZ, ok := Z.(*kzg.KZGVerify)
+	realZ, ok := Z.(kzg.KZGVerify)
+	fmt.Println("real z", reflect.TypeOf(realZ))
+	fmt.Println("the z type", reflect.TypeOf(Z))
 	if !ok {
 		fmt.Println("Type assertion failed")
 		return
 	}
-	serializableZ := FromKZGVerify(*realZ)
+	serializableZ := FromKZGVerify(Z)
 
 	if err != nil {
 		handleEncodingErrorKZGVerify(err, conn, peer, port, Z, nodeID, IdToConnMap, MapIdToEncoder)
