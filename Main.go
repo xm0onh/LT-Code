@@ -183,7 +183,7 @@ func main() {
 			go Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 			fmt.Println(<-conAct.KZGVerficationStatus)
 			fmt.Println("Test after Verification")
-			// Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+			Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 		}
 		fmt.Println("the request is ", request)
 	}
