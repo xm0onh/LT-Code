@@ -239,15 +239,9 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		c.KZGSetup.Z = event.Z
 		c.KZGSetup.Y = Y
 		c.KZGSetup.GenerateProof()
-
 		kzgVerfyStruct := kzg.CreateKZGVerifier(c.KZGSetup.TS, c.KZGSetup.Commitment, *c.KZGSetup.Y, *c.KZGSetup.Z, c.KZGSetup.Proof)
-		fmt.Println("Proof ->", kzgVerfyStruct)
-		for i := 0; i < len(c.RequestorIDs); i++ {
-			ReqUesterIP, ErrBin := N.GetIPaddFromConn(c.NodeIdToDialConnMapRequestors[c.RequestorIDs[i]])
-			if !ErrBin {
-				log.Fatal("Conn corruption with Requester")
-			}
-			N.KZGZVerifier(c.NodeIdToDialConnMapRequestors[c.RequestorIDs[i]], kzgVerfyStruct, ReqUesterIP, c.RequestorIDs[i], c.MsgsPort, &c.NodeIdToDialConnMapRequestors, &c.NodeIDToEncoderMap)
+		for ID, IP := range c.IDToIPMPResponders {
+			N.KZGZVerifier(c.NodeIdToDialConnMapResponders[ID], kzgVerfyStruct, IP, ID, c.MsgsPort, &c.NodeIdToDialConnMapResponders, &c.NodeIDToEncoderMap)
 		}
 
 	case kzg.KZGVerify:
