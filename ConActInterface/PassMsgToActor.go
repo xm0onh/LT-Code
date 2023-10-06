@@ -65,6 +65,7 @@ type ConActor struct {
 	RequestResponseTimeCounter  int64
 	DropletCounter              int64
 	NodeIDToEncoderMap          map[string]*gob.Encoder
+	KZGSetup                    kzg.KZGSetup
 	BloomFilterVerificationTime int64
 }
 
@@ -233,7 +234,27 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 	case kzg.KZGRequest:
 		fmt.Println("KZG Request is received")
 		fmt.Println(event.Z)
+		Y := c.KZGSetup.EvaluatePolynomial(event.Z)
+		c.KZGSetup.Z = event.Z
+		c.KZGSetup.Y = Y
+		c.KZGSetup.GenerateProof()
+		kzgVerfyStruct := kzg.CreateKZGVerifier(c.KZGSetup.TS, c.KZGSetup.Commitment, *c.KZGSetup.Y, *c.KZGSetup.Z, c.KZGSetup.Proof)
+		for i := 0; i < len(c.RequestorIDs); i++ {
+			ReqUesterIP, ErrBin := N.GetIPaddFromConn(c.NodeIdToDialConnMapRequestors[c.RequestorIDs[i]])
+			if !ErrBin {
+				log.Fatal("Conn corruption with Requester")
+			}
+			N.KZGZVerifier(c.NodeIdToDialConnMapRequestors[c.RequestorIDs[i]], kzgVerfyStruct, ReqUesterIP, c.RequestorIDs[i], c.MsgsPort, &c.NodeIdToDialConnMapRequestors, &c.NodeIDToEncoderMap)
+		}
 
+	case kzg.KZGVerify:
+		fmt.Println("KZG Verify is received")
+		v := event.VerifyKZGProof()
+		if v {
+			fmt.Println("KZG Verification is successful")
+		} else {
+			fmt.Println("KZG Verification is unsuccessful")
+		}
 	case Timer.TimerStruct:
 		if event.IsRequesterDuration {
 			c.CollectRespondersTime(event.Duration)

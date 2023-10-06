@@ -11,57 +11,16 @@ import (
 	"time"
 )
 
-//func BroadCastMsg(Msg E.VerifyEntity, peers []string, Msgport string, connSlice []net.Conn){
-//	//fmt.Println("Msg is,", Msg)
-//	//dialSlice:=dial(peers,Msgport)
-//	for indx,conn:=range connSlice{
-//		go MsgSender(conn,Msg, peers[indx], Msgport)
-//	}
-
-//}
-
-// func MsgSender(conn net.Conn, Msg E.VerifyEntity, peer, nodeID, port string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
-// 	////	ctx,cancel:=context.WithCancel(context.Background())
-// 	//defer cancel()
-// 	//	fmt.Println("Conn is, ", conn)
-// 	//		fmt.Println("msg is,", Msg)
-
-// 	//	Encoder := gob.NewEncoder(conn)
-// 	enc := (*MapIdToEncoder)[nodeID]
-// 	// fmt.Println("Encoder is", enc)
-// 	// fmt.Println("Encoder type is", reflect.TypeOf(enc))
-// 	// fmt.Println("Msg type is", reflect.TypeOf(Msg))
-// 	err := enc.Encode(&Msg)
-// 	// err := encoder.Encode(&Msg)
-// 	if err != nil {
-// 		fmt.Println("Encoding error is", err.Error())
-// 		conn.Close()
-// 		conn = nil
-// 		time.Sleep(300 * time.Millisecond)
-// 		conn = DialNode(peer, port)
-// 		fmt.Println("Creating new Connection")
-// 		enc := gob.NewEncoder(conn)
-// 		(*IdToConnMap)[nodeID] = conn
-// 		(*MapIdToEncoder)[nodeID] = enc
-// 		MsgSender(conn, Msg, peer, nodeID, port, IdToConnMap, MapIdToEncoder)
-// 		//return enc, true
-// 	}
-// 	//	conn.Close()
-// 	//return enc, false
-// }
-
 func MsgSender(conn net.Conn, Msg E.VerifyEntity, peer, nodeID, port string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
 	enc := (*MapIdToEncoder)[nodeID]
 
-	// First send the dataType
-	dataType := "VerifyEntity" // This is the data type identifier for E.VerifyEntity
+	dataType := "VerifyEntity"
 	err := enc.Encode(&dataType)
 	if err != nil {
 		handleEncodingError(err, conn, peer, port, Msg, nodeID, IdToConnMap, MapIdToEncoder)
 		return
 	}
 
-	// Then send the actual message
 	err = enc.Encode(&Msg)
 	if err != nil {
 		handleEncodingError(err, conn, peer, port, Msg, nodeID, IdToConnMap, MapIdToEncoder)
@@ -82,16 +41,13 @@ func handleEncodingError(err error, conn net.Conn, peer, port string, Msg E.Veri
 
 func KZGZSender(conn net.Conn, Z kzg.KZGZSender, peer, nodeID, port string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
 	enc := (*MapIdToEncoder)[nodeID]
-
-	// First send the dataType
-	dataType := "KZGZSender" // This is the data type identifier for E.VerifyEntity
+	dataType := "KZGZSender"
 	err := enc.Encode(&dataType)
 	if err != nil {
 		handleEncodingErrorZ(err, conn, peer, port, Z, nodeID, IdToConnMap, MapIdToEncoder)
 		return
 	}
 
-	// Then send the actual message
 	err = enc.Encode(&Z)
 	if err != nil {
 		handleEncodingErrorZ(err, conn, peer, port, Z, nodeID, IdToConnMap, MapIdToEncoder)
@@ -108,6 +64,33 @@ func handleEncodingErrorZ(err error, conn net.Conn, peer, port string, Z kzg.KZG
 	(*IdToConnMap)[nodeID] = newConn
 	(*MapIdToEncoder)[nodeID] = newEnc
 	KZGZSender(newConn, Z, peer, nodeID, port, IdToConnMap, MapIdToEncoder)
+}
+
+func KZGZVerifier(conn net.Conn, Z kzg.KZGVerifier, peer, nodeID, port string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
+	enc := (*MapIdToEncoder)[nodeID]
+	dataType := "KZGZVerifier"
+	err := enc.Encode(&dataType)
+	if err != nil {
+		handleEncodingErrorKZGVerify(err, conn, peer, port, Z, nodeID, IdToConnMap, MapIdToEncoder)
+		return
+	}
+
+	err = enc.Encode(&Z)
+	if err != nil {
+		handleEncodingErrorKZGVerify(err, conn, peer, port, Z, nodeID, IdToConnMap, MapIdToEncoder)
+	}
+}
+
+func handleEncodingErrorKZGVerify(err error, conn net.Conn, peer, port string, Z kzg.KZGVerifier, nodeID string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
+	fmt.Println("Encoding error:", err)
+	conn.Close()
+	time.Sleep(300 * time.Millisecond)
+	newConn := DialNode(peer, port)
+	fmt.Println("Creating new Connection")
+	newEnc := gob.NewEncoder(newConn)
+	(*IdToConnMap)[nodeID] = newConn
+	(*MapIdToEncoder)[nodeID] = newEnc
+	KZGZVerifier(newConn, Z, peer, nodeID, port, IdToConnMap, MapIdToEncoder)
 }
 
 func DialNode(peer, port string) net.Conn {

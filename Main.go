@@ -26,6 +26,7 @@ func main() {
 	gob.Register(Timer.TimerStruct{})
 	gob.Register(kzg.KZGStatus{})
 	gob.Register(kzg.KZGRequest{})
+	gob.Register(kzg.KZGVerify{})
 	gob.Register(bloom.BloomFilter{})
 
 	////////Key setup and Loading//////////
@@ -143,19 +144,12 @@ func main() {
 
 		}
 		fmt.Println("Done with Decoding!")
-		/*
-			// Testing the Encoding of Droplet Slice
-			// buf := new(bytes.Buffer)
-			// encoder := gob.NewEncoder(buf)
 
-			// fmt.Println(reflect.TypeOf(conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0]))
-			// // Assuming that conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0] is of a type that can be encoded by gob.
-			// err := encoder.Encode(conAct.Decoder.MacroBlockIDToDropletSliceMap[0][0])
-			// if err != nil {
-			// 	fmt.Println("Encoding failed:", err)
-			// 	return
-			// }
-		*/
+		fmt.Println("Start the KZG Trusted Setup")
+		conAct.KZGSetup = *kzg.InitKZG(dropletSlice)
+		// fmt.Println("KZG Commitment is", comm)
+		// fmt.Println("KZG z is", z)
+		// fmt.Println("KZG y is", y)
 
 	}
 	/////////////////////KZG Commitment//////////
@@ -170,21 +164,6 @@ func main() {
 	if Net.IfIamArequestor(conAct.RequestorIDs, conAct.MyID) {
 
 		fmt.Println(" I am a requestor!")
-		// var KZGStat = kzg.KZGStatus{}
-		// if dropletSlice != nil {
-		// 	fmt.Println("Start the KZG Trusted Setup")
-		// 	TS, comm, z, y, proof, err := kzg.InitKZG(dropletSlice)
-		// 	fmt.Println("KZG Commitment is", comm)
-		// 	fmt.Println("KZG z is", z)
-		// 	fmt.Println("KZG y is", y)
-		// 	if err != nil {
-		// 		fmt.Println("error during KZG", err.Error())
-		// 	} else {
-		// 		KZGStat.Status = kzg.VerifyKZGProof(TS, comm, proof, z, y)
-		// 		fmt.Println("KZG Status is", KZGStat.Status)
-
-		// 	}
-		// }
 		kzgReq := kzg.CreateKZGRequest()
 		request := Encoding.CreateReq(1, 8, conAct.MyID, conAct.PrivateKey)
 		fmt.Println("Request Sig is", request.Sig)
@@ -201,7 +180,7 @@ func main() {
 
 		for ID, IP := range conAct.IDToIPMPResponders {
 			Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
-			Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+			// Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 		}
 		fmt.Println("the request is ", request)
 	}

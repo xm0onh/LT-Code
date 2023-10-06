@@ -11,6 +11,15 @@ import (
 	Enc "github.com/xm0onh/LT-Code/Encoding"
 )
 
+type KZGSetup struct {
+	TS         k.TrustedSetup
+	Commitment bn256.G1
+	Coeff      []*big.Int
+	Proof      bn256.G1
+	Z          *big.Int
+	Y          *big.Int
+}
+
 // ConvertHashToFieldElement converts the given hash to a big integer that lies within the finite field defined by R.
 func ConvertHashToFieldElement(hash []byte) *big.Int {
 	hInt := new(big.Int).SetBytes(hash)
@@ -44,17 +53,17 @@ func RandomFieldElement() *big.Int {
 	}
 }
 
-func evaluatePolynomial(p []*big.Int, x *big.Int) *big.Int {
+func (Setup KZGSetup) EvaluatePolynomial(z *big.Int) *big.Int {
 	result := big.NewInt(0)
-	for i := len(p) - 1; i >= 0; i-- {
-		result.Mul(result, x)
-		result.Add(result, p[i])
+	for i := len(Setup.Coeff) - 1; i >= 0; i-- {
+		result.Mul(result, z)
+		result.Add(result, Setup.Coeff[i])
 		result.Mod(result, kzg.R)
 	}
 	return result
 }
 
-func InitKZG(dropletSlice []Enc.Droplet) (*k.TrustedSetup, *bn256.G1, *big.Int, *big.Int, *bn256.G1, error) {
+func InitKZG(dropletSlice []Enc.Droplet) *KZGSetup {
 
 	var hashes [][]byte
 	for _, droplet := range dropletSlice {
@@ -67,15 +76,21 @@ func InitKZG(dropletSlice []Enc.Droplet) (*k.TrustedSetup, *bn256.G1, *big.Int, 
 	}
 	c := kzg.Commit(ts, coeff)
 	fmt.Println("KZG commitment", c)
-	z := RandomFieldElement()
-	// z := ConvertHashToFieldElement(dropletSlice[0].DropletHash)
-	y := evaluatePolynomial(coeff, z)
-	fmt.Println("Y -->", y)
-	proof, err := kzg.EvaluationProof(ts, coeff, z, y)
+	// y := evaluatePolynomial(coeff, z)
+	// fmt.Println("Y -->", y)
+	// proof, err := kzg.EvaluationProof(ts, coeff, z, y)
 
-	return ts, c, z, y, proof, err
+	return &KZGSetup{
+		TS:         *ts,
+		Commitment: *c,
+		Coeff:      coeff,
+	}
 }
 
-func VerifyKZGProof(TS *k.TrustedSetup, commit *bn256.G1, proof *bn256.G1, z, y *big.Int) bool {
-	return kzg.Verify(TS, commit, proof, z, y)
+func (K KZGSetup) GenerateProof() {
+	proof, err := kzg.EvaluationProof(&K.TS, K.Coeff, K.Z, K.Y)
+	if err != nil {
+		panic(err)
+	}
+	K.Proof = *proof
 }
