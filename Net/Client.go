@@ -153,7 +153,7 @@ func KZGZVerifier(conn net.Conn, Z kzg.KZGVerify, peer, nodeID, port string, IdT
 	// }
 	serializableZ := FromKZGVerify(Z)
 	fmt.Println("the serializableZ type", reflect.TypeOf(serializableZ))
-	fmt.Println("serializableZ", serializableZ)
+
 	// if err != nil {
 	// 	handleEncodingErrorKZGVerify(err, conn, peer, port, Z, nodeID, IdToConnMap, MapIdToEncoder)
 	// 	return

@@ -152,7 +152,6 @@ func Blockhandleconnection(conn net.Conn, conInterface CNI.NetworkToConActInterf
 				continue // Go to the next loop iteration
 			}
 			kzgVerifyStruct := RecType2.ToKZGVerify()
-			fmt.Println("KZGZVerifier is", kzgVerifyStruct)
 			fmt.Println("Type", reflect.TypeOf(kzgVerifyStruct))
 			handleReceivedData(kzgVerifyStruct, conn, conInterface, CommitteeSize)
 		default:
