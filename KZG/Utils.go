@@ -93,4 +93,6 @@ func (K *KZGSetup) GenerateProof() {
 		panic(err)
 	}
 	K.Proof = proof
+	proofBytes := proof.Marshal()
+	fmt.Printf("Size of the proof: %d bytes\n", len(proofBytes))
 }
