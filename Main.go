@@ -27,6 +27,7 @@ func main() {
 	gob.Register(kzg.KZGStatus{})
 	gob.Register(kzg.KZGRequest{})
 	gob.Register(kzg.KZGVerify{})
+	gob.Register(Net.SerializableKZGVerify{})
 	gob.Register(bloom.BloomFilter{})
 
 	////////Key setup and Loading//////////

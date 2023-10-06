@@ -142,6 +142,16 @@ func Blockhandleconnection(conn net.Conn, conInterface CNI.NetworkToConActInterf
 			}
 			handleReceivedData(RecType2, conn, conInterface, CommitteeSize)
 
+		case "KZGZVerifier":
+			var RecType2 SerializableKZGVerify
+			err = decoder.Decode(&RecType2)
+
+			if err != nil {
+				handleDecodeError(err, conn)
+				continue // Go to the next loop iteration
+			}
+			kzgVerifyStruct := RecType2.ToKZGVerify()
+			handleReceivedData(kzgVerifyStruct, conn, conInterface, CommitteeSize)
 		default:
 			fmt.Println("Unknown data type received:", dataType)
 		}

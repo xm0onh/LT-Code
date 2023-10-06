@@ -1,6 +1,10 @@
 package Net
 
 import (
+	"math/big"
+
+	k "github.com/arnaucube/kzg-commitments-study"
+	bn256 "github.com/ethereum/go-ethereum/crypto/bn256/cloudflare"
 	E "github.com/xm0onh/LT-Code/Encoding"
 	kzg "github.com/xm0onh/LT-Code/KZG"
 
@@ -66,16 +70,56 @@ func handleEncodingErrorZ(err error, conn net.Conn, peer, port string, Z kzg.KZG
 	KZGZSender(newConn, Z, peer, nodeID, port, IdToConnMap, MapIdToEncoder)
 }
 
+type SerializableKZGVerify struct {
+	TS         k.TrustedSetup
+	Commitment []byte
+	Y          big.Int
+	Z          big.Int
+	Proof      []byte
+}
+
+func (skzg *SerializableKZGVerify) ToKZGVerify() kzg.KZGVerify {
+	var commitment, proof bn256.G1
+	commitment.Unmarshal(skzg.Commitment)
+	proof.Unmarshal(skzg.Proof)
+	return kzg.KZGVerify{
+		TS:         skzg.TS,
+		Commitment: commitment,
+		Y:          skzg.Y,
+		Z:          skzg.Z,
+		Proof:      proof,
+	}
+}
+
+func FromKZGVerify(kzgVer kzg.KZGVerify) SerializableKZGVerify {
+	commitmentBytes := kzgVer.Commitment.Marshal()
+	proofBytes := kzgVer.Proof.Marshal()
+	return SerializableKZGVerify{
+		TS:         kzgVer.TS,
+		Commitment: commitmentBytes,
+		Y:          kzgVer.Y,
+		Z:          kzgVer.Z,
+		Proof:      proofBytes,
+	}
+}
+
 func KZGZVerifier(conn net.Conn, Z kzg.KZGVerifier, peer, nodeID, port string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
 	enc := (*MapIdToEncoder)[nodeID]
 	dataType := "KZGZVerifier"
 	err := enc.Encode(&dataType)
+	realZ, ok := Z.(kzg.KZGVerify)
+	if !ok {
+		fmt.Println("Type assertion failed")
+		return
+	}
+	serializableZ := FromKZGVerify(realZ)
+
 	if err != nil {
 		handleEncodingErrorKZGVerify(err, conn, peer, port, Z, nodeID, IdToConnMap, MapIdToEncoder)
 		return
 	}
 
-	err = enc.Encode(&Z)
+	err = enc.Encode(&serializableZ)
 	if err != nil {
 		handleEncodingErrorKZGVerify(err, conn, peer, port, Z, nodeID, IdToConnMap, MapIdToEncoder)
 	}
