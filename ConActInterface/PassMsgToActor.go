@@ -254,7 +254,7 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 			fmt.Println("ID", ID)
 			fmt.Println("IP", IP)
 			fmt.Println("c.NodeIdToDialConnMapRequestors[ID]", c.NodeIdToDialConnMapRequestors)
-			N.KZGZVerifier(c.NodeIdToDialConnMapRequestors[ID], kzgVerfyStruct, IP, ID, c.MsgsPort, &c.NodeIdToDialConnMapRequestors, &c.NodeIDToEncoderMap)
+			N.KZGZVerifier(c.NodeIdToDialConnMapRequestors[ID], *kzgVerfyStruct, IP, ID, c.MsgsPort, &c.NodeIdToDialConnMapRequestors, &c.NodeIDToEncoderMap)
 		}
 
 	case kzg.KZGVerify:

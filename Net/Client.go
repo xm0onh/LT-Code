@@ -139,19 +139,19 @@ func (skzg *SerializableKZGVerify) ToKZGVerify() kzg.KZGVerify {
 	}
 }
 
-func KZGZVerifier(conn net.Conn, Z kzg.KZGVerifier, peer, nodeID, port string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
+func KZGZVerifier(conn net.Conn, Z kzg.KZGVerify, peer, nodeID, port string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
 	enc := (*MapIdToEncoder)[nodeID]
 	dataType := "KZGZVerifier"
 	err := enc.Encode(&dataType)
-	realZ, _ := Z.(kzg.KZGVerify)
-	fmt.Println(realZ)
-	fmt.Println("real z", reflect.TypeOf(realZ))
+	// realZ, _ := Z.(kzg.KZGVerify)
+	// fmt.Println(realZ)
+	// fmt.Println("real z", reflect.TypeOf(realZ))
 	fmt.Println("the z type", reflect.TypeOf(Z))
 	// if !ok {
 	// 	fmt.Println("Type assertion failed")
 	// 	return
 	// }
-	serializableZ := FromKZGVerify(realZ)
+	serializableZ := FromKZGVerify(Z)
 	fmt.Println("the serializableZ type", reflect.TypeOf(serializableZ))
 	fmt.Println("serializableZ", serializableZ)
 	// if err != nil {
@@ -165,7 +165,7 @@ func KZGZVerifier(conn net.Conn, Z kzg.KZGVerifier, peer, nodeID, port string, I
 	}
 }
 
-func handleEncodingErrorKZGVerify(err error, conn net.Conn, peer, port string, Z kzg.KZGVerifier, nodeID string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
+func handleEncodingErrorKZGVerify(err error, conn net.Conn, peer, port string, Z kzg.KZGVerify, nodeID string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
 	fmt.Println("Encoding error:", err)
 	conn.Close()
 	time.Sleep(300 * time.Millisecond)
