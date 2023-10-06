@@ -235,10 +235,13 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		fmt.Println("KZG Request is received")
 		fmt.Println(event.Z)
 		Y := c.KZGSetup.EvaluatePolynomial(event.Z)
+		fmt.Println("Y -->", Y)
 		c.KZGSetup.Z = event.Z
 		c.KZGSetup.Y = Y
 		c.KZGSetup.GenerateProof()
+
 		kzgVerfyStruct := kzg.CreateKZGVerifier(c.KZGSetup.TS, c.KZGSetup.Commitment, *c.KZGSetup.Y, *c.KZGSetup.Z, c.KZGSetup.Proof)
+		fmt.Println("Proof ->", kzgVerfyStruct)
 		for i := 0; i < len(c.RequestorIDs); i++ {
 			ReqUesterIP, ErrBin := N.GetIPaddFromConn(c.NodeIdToDialConnMapRequestors[c.RequestorIDs[i]])
 			if !ErrBin {
