@@ -12,7 +12,7 @@ import (
 )
 
 type KZGSetup struct {
-	TS         k.TrustedSetup
+	TS         *k.TrustedSetup
 	Commitment *bn256.G1
 	Coeff      []*big.Int
 	Proof      *bn256.G1
@@ -81,14 +81,14 @@ func InitKZG(dropletSlice []Enc.Droplet) *KZGSetup {
 	// proof, err := kzg.EvaluationProof(ts, coeff, z, y)
 
 	return &KZGSetup{
-		TS:         *ts,
+		TS:         ts,
 		Commitment: c,
 		Coeff:      coeff,
 	}
 }
 
 func (K KZGSetup) GenerateProof() {
-	proof, err := kzg.EvaluationProof(&K.TS, K.Coeff, K.Z, K.Y)
+	proof, err := kzg.EvaluationProof(K.TS, K.Coeff, K.Z, K.Y)
 	if err != nil {
 		panic(err)
 	}
