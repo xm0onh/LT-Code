@@ -5,6 +5,7 @@ import (
 	"encoding/gob"
 	"fmt"
 	"log"
+	"unsafe"
 
 	"github.com/xm0onh/LT-Code/Decoding"
 	Enc "github.com/xm0onh/LT-Code/Encoding"
@@ -243,6 +244,9 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		c.KZGSetup.GenerateProof()
 		kzgVerfyStruct := kzg.CreateKZGVerifier(*c.KZGSetup.TS, *c.KZGSetup.Commitment, *c.KZGSetup.Y, *c.KZGSetup.Z, *c.KZGSetup.Proof)
 		fmt.Println("ID TO IP MP Requesters is", c.IDToIPMPRequesters)
+		sizeInBytes := unsafe.Sizeof(*&c.KZGSetup.Proof)
+		sizeInKB := float64(sizeInBytes) / 1024.0
+		fmt.Printf("Size of Proof: %f KB\n", sizeInKB)
 		if c.KZGSetup.TS.Tau1 == nil || c.KZGSetup.TS.Tau2 == nil {
 			fmt.Println("TS is nil")
 		}

@@ -166,7 +166,7 @@ func main() {
 
 		fmt.Println(" I am a requestor!")
 		kzgReq := kzg.CreateKZGRequest()
-		request := Encoding.CreateReq(1, 2, conAct.MyID, conAct.PrivateKey)
+		request := Encoding.CreateReq(1, 8, conAct.MyID, conAct.PrivateKey)
 		fmt.Println("Request Sig is", request.Sig)
 		fmt.Println("Request Hash is", request.RHash)
 		fmt.Println("conAct.ID is", conAct.IDs)
