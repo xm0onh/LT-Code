@@ -144,6 +144,7 @@ func KZGZVerifier(conn net.Conn, Z kzg.KZGVerifier, peer, nodeID, port string, I
 	dataType := "KZGZVerifier"
 	err := enc.Encode(&dataType)
 	realZ, _ := Z.(kzg.KZGVerify)
+	fmt.Println(realZ)
 	fmt.Println("real z", reflect.TypeOf(realZ))
 	fmt.Println("the z type", reflect.TypeOf(Z))
 	// if !ok {
