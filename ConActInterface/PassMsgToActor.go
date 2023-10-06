@@ -239,14 +239,14 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		c.KZGSetup.Z = event.Z
 		c.KZGSetup.Y = Y
 		c.KZGSetup.GenerateProof()
-		// kzgVerfyStruct := kzg.CreateKZGVerifier(c.KZGSetup.TS, c.KZGSetup.Commitment, *c.KZGSetup.Y, *c.KZGSetup.Z, c.KZGSetup.Proof)
+		kzgVerfyStruct := kzg.CreateKZGVerifier(c.KZGSetup.TS, c.KZGSetup.Commitment, *c.KZGSetup.Y, *c.KZGSetup.Z, c.KZGSetup.Proof)
 		fmt.Println("ID TO IP MP Requesters is", c.IDToIPMPRequesters)
-		// for ID, IP := range c.IDToIPMPRequesters {
-		// 	fmt.Println("Debug", c.NodeIdToDialConnMapRequestors[ID])
-		// 	ReqUesterIP, ErrBin := N.GetIPaddFromConn(c.NodeIdToDialConnMapRequestors[c.RequestorIDs[ID]])
-
-		// 	N.KZGZVerifier(c.NodeIdToDialConnMapRequestors[ID], kzgVerfyStruct, IP, ID, c.MsgsPort, &c.NodeIdToDialConnMapRequestors, &c.NodeIDToEncoderMap)
-		// }
+		for ID, IP := range c.IDToIPMPRequesters {
+			fmt.Println("ID", ID)
+			fmt.Println("IP", IP)
+			fmt.Println("c.NodeIdToDialConnMapRequestors[ID]", c.NodeIdToDialConnMapRequestors)
+			N.KZGZVerifier(c.NodeIdToDialConnMapRequestors[ID], kzgVerfyStruct, IP, ID, c.MsgsPort, &c.NodeIdToDialConnMapRequestors, &c.NodeIDToEncoderMap)
+		}
 
 	case kzg.KZGVerify:
 		fmt.Println("KZG Verify is received")
