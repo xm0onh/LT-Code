@@ -105,6 +105,7 @@ func CreateConActor(mapSize int, privKey kyber.Scalar) *ConActor {
 		DropletCounter:              0,
 		NodeIDToEncoderMap:          make(map[string]*gob.Encoder),
 		BloomFilterVerificationTime: 0,
+		KZGVerficationStatus:        make(chan bool),
 	}
 }
 
