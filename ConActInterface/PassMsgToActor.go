@@ -241,6 +241,7 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		c.KZGSetup.GenerateProof()
 		kzgVerfyStruct := kzg.CreateKZGVerifier(c.KZGSetup.TS, c.KZGSetup.Commitment, *c.KZGSetup.Y, *c.KZGSetup.Z, c.KZGSetup.Proof)
 		for ID, IP := range c.IDToIPMPResponders {
+			fmt.Println("Debug", c.NodeIdToDialConnMapResponders[ID])
 			N.KZGZVerifier(c.NodeIdToDialConnMapResponders[ID], kzgVerfyStruct, IP, ID, c.MsgsPort, &c.NodeIdToDialConnMapResponders, &c.NodeIDToEncoderMap)
 		}
 
