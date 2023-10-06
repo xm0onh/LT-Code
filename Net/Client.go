@@ -72,35 +72,70 @@ func handleEncodingErrorZ(err error, conn net.Conn, peer, port string, Z kzg.KZG
 }
 
 type SerializableKZGVerify struct {
-	TS         k.TrustedSetup
+	TS         SerializableTrustedSetup
 	Commitment []byte
 	Y          big.Int
 	Z          big.Int
 	Proof      []byte
 }
 
-func (skzg *SerializableKZGVerify) ToKZGVerify() kzg.KZGVerify {
-	var commitment, proof bn256.G1
-	commitment.Unmarshal(skzg.Commitment)
-	proof.Unmarshal(skzg.Proof)
-	return kzg.KZGVerify{
-		TS:         skzg.TS,
-		Commitment: commitment,
-		Y:          skzg.Y,
-		Z:          skzg.Z,
-		Proof:      proof,
-	}
+type SerializableTrustedSetup struct {
+	Tau1 [][]byte
+	Tau2 [][]byte
 }
 
 func FromKZGVerify(kzgVer kzg.KZGVerify) SerializableKZGVerify {
 	commitmentBytes := kzgVer.Commitment.Marshal()
 	proofBytes := kzgVer.Proof.Marshal()
+
+	// Serialize the TrustedSetup
+	serialTS := SerializableTrustedSetup{
+		Tau1: make([][]byte, len(kzgVer.TS.Tau1)),
+		Tau2: make([][]byte, len(kzgVer.TS.Tau2)),
+	}
+	for i, g1 := range kzgVer.TS.Tau1 {
+		serialTS.Tau1[i] = g1.Marshal()
+	}
+	for i, g2 := range kzgVer.TS.Tau2 {
+		serialTS.Tau2[i] = g2.Marshal()
+	}
+
 	return SerializableKZGVerify{
-		TS:         kzgVer.TS,
+		TS:         serialTS,
 		Commitment: commitmentBytes,
 		Y:          kzgVer.Y,
 		Z:          kzgVer.Z,
 		Proof:      proofBytes,
+	}
+}
+
+func (skzg *SerializableKZGVerify) ToKZGVerify() kzg.KZGVerify {
+	var commitment, proof bn256.G1
+	commitment.Unmarshal(skzg.Commitment)
+	proof.Unmarshal(skzg.Proof)
+
+	// Deserialize the TrustedSetup
+	realTS := k.TrustedSetup{
+		Tau1: make([]*bn256.G1, len(skzg.TS.Tau1)),
+		Tau2: make([]*bn256.G2, len(skzg.TS.Tau2)),
+	}
+	for i, bytes := range skzg.TS.Tau1 {
+		g1 := new(bn256.G1)
+		g1.Unmarshal(bytes)
+		realTS.Tau1[i] = g1
+	}
+	for i, bytes := range skzg.TS.Tau2 {
+		g2 := new(bn256.G2)
+		g2.Unmarshal(bytes)
+		realTS.Tau2[i] = g2
+	}
+
+	return kzg.KZGVerify{
+		TS:         realTS,
+		Commitment: commitment,
+		Y:          skzg.Y,
+		Z:          skzg.Z,
+		Proof:      proof,
 	}
 }
 
