@@ -87,7 +87,7 @@ func InitKZG(dropletSlice []Enc.Droplet) *KZGSetup {
 	}
 }
 
-func (K KZGSetup) GenerateProof() {
+func (K *KZGSetup) GenerateProof() {
 	proof, err := kzg.EvaluationProof(K.TS, K.Coeff, K.Z, K.Y)
 	if err != nil {
 		panic(err)
