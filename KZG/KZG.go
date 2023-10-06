@@ -3,7 +3,6 @@ package kzg
 import (
 	"math/big"
 
-	"github.com/arnaucube/kzg-commitments-study"
 	k "github.com/arnaucube/kzg-commitments-study"
 	bn256 "github.com/ethereum/go-ethereum/crypto/bn256/cloudflare"
 )
@@ -44,5 +43,5 @@ func (K KZGRequest) SendZ() *big.Int {
 }
 
 func (KVerify KZGVerify) VerifyKZGProof() bool {
-	return kzg.Verify(&KVerify.TS, &KVerify.Commitment, &KVerify.Proof, &KVerify.Z, &KVerify.Y)
+	return k.Verify(&KVerify.TS, &KVerify.Commitment, &KVerify.Proof, &KVerify.Z, &KVerify.Y)
 }

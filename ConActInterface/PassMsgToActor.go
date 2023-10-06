@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 
+	k "github.com/arnaucube/kzg-commitments-study"
 	"github.com/xm0onh/LT-Code/Decoding"
 	Enc "github.com/xm0onh/LT-Code/Encoding"
 	kzg "github.com/xm0onh/LT-Code/KZG"
@@ -241,7 +242,9 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		c.KZGSetup.GenerateProof()
 		kzgVerfyStruct := kzg.CreateKZGVerifier(c.KZGSetup.TS, c.KZGSetup.Commitment, *c.KZGSetup.Y, *c.KZGSetup.Z, c.KZGSetup.Proof)
 		fmt.Println("ID TO IP MP Requesters is", c.IDToIPMPRequesters)
-		fmt.Println("Verification:", kzgVerfyStruct.VerifyKZGProof())
+		s := k.Verify(&c.KZGSetup.TS, &c.KZGSetup.Commitment, &c.KZGSetup.Proof, c.KZGSetup.Z, c.KZGSetup.Y)
+		fmt.Println("S-->", s)
+		// fmt.Println("Verification:", kzgVerfyStruct.VerifyKZGProof())
 		if len(c.NodeIdToDialConnMapRequestors) == 0 {
 			for ID, IP := range c.IDToIPMPRequesters {
 				conn := N.DialNode(IP, c.MsgsPort)
