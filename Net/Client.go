@@ -115,7 +115,7 @@ func KZGZVerifier(conn net.Conn, Z kzg.KZGVerifier, peer, nodeID, port string, I
 		fmt.Println("Type assertion failed")
 		return
 	}
-	serializableZ := FromKZGVerify(Z)
+	serializableZ := FromKZGVerify(realZ)
 
 	if err != nil {
 		handleEncodingErrorKZGVerify(err, conn, peer, port, Z, nodeID, IdToConnMap, MapIdToEncoder)
