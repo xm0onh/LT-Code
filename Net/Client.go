@@ -1,8 +1,6 @@
 package Net
 
 import (
-	"reflect"
-
 	E "github.com/xm0onh/LT-Code/Encoding"
 	kzg "github.com/xm0onh/LT-Code/KZG"
 
@@ -84,27 +82,32 @@ func handleEncodingError(err error, conn net.Conn, peer, port string, Msg E.Veri
 
 func KZGZSender(conn net.Conn, Z kzg.KZGZSender, peer, nodeID, port string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
 	enc := (*MapIdToEncoder)[nodeID]
-	// fmt.Println("Encoder is", enc)
-	// fmt.Println("Encoder type is", reflect.TypeOf(enc))
-	fmt.Println("Msg type is", reflect.TypeOf(Z))
-	err := enc.Encode(&Z)
-	fmt.Println(err)
-	// err := encoder.Encode(&Msg)
+
+	// First send the dataType
+	dataType := "KZGZSender" // This is the data type identifier for E.VerifyEntity
+	err := enc.Encode(&dataType)
 	if err != nil {
-		fmt.Println("Encoding error is", err.Error())
-		conn.Close()
-		conn = nil
-		time.Sleep(300 * time.Millisecond)
-		conn = DialNode(peer, port)
-		fmt.Println("Creating new Connection")
-		enc := gob.NewEncoder(conn)
-		(*IdToConnMap)[nodeID] = conn
-		(*MapIdToEncoder)[nodeID] = enc
-		KZGZSender(conn, Z, peer, nodeID, port, IdToConnMap, MapIdToEncoder)
-		//return enc, true
+		handleEncodingErrorZ(err, conn, peer, port, Z, nodeID, IdToConnMap, MapIdToEncoder)
+		return
 	}
-	//	conn.Close()
-	//return enc, false
+
+	// Then send the actual message
+	err = enc.Encode(&Z)
+	if err != nil {
+		handleEncodingErrorZ(err, conn, peer, port, Z, nodeID, IdToConnMap, MapIdToEncoder)
+	}
+}
+
+func handleEncodingErrorZ(err error, conn net.Conn, peer, port string, Z kzg.KZGZSender, nodeID string, IdToConnMap *map[string]net.Conn, MapIdToEncoder *map[string]*gob.Encoder) {
+	fmt.Println("Encoding error:", err)
+	conn.Close()
+	time.Sleep(300 * time.Millisecond)
+	newConn := DialNode(peer, port)
+	fmt.Println("Creating new Connection")
+	newEnc := gob.NewEncoder(newConn)
+	(*IdToConnMap)[nodeID] = newConn
+	(*MapIdToEncoder)[nodeID] = newEnc
+	KZGZSender(newConn, Z, peer, nodeID, port, IdToConnMap, MapIdToEncoder)
 }
 
 func DialNode(peer, port string) net.Conn {
