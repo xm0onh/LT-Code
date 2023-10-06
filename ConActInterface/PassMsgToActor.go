@@ -280,8 +280,9 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		fmt.Println("KZG Verify is received")
 		v := event.VerifyKZGProof()
 		if v {
-			c.KZGVerficationStatus <- true
+
 			fmt.Println("KZG Verification is successful")
+			c.KZGVerficationStatus <- true
 		} else {
 			fmt.Println("KZG Verification is unsuccessful")
 		}
