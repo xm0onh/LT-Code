@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"reflect"
 
 	E "github.com/xm0onh/LT-Code/Encoding"
 	kzg "github.com/xm0onh/LT-Code/KZG"
@@ -151,6 +152,8 @@ func Blockhandleconnection(conn net.Conn, conInterface CNI.NetworkToConActInterf
 				continue // Go to the next loop iteration
 			}
 			kzgVerifyStruct := RecType2.ToKZGVerify()
+			fmt.Println("KZGZVerifier is", kzgVerifyStruct)
+			fmt.Println("Type", reflect.TypeOf(kzgVerifyStruct))
 			handleReceivedData(kzgVerifyStruct, conn, conInterface, CommitteeSize)
 		default:
 			fmt.Println("Unknown data type received:", dataType)
