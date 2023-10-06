@@ -239,7 +239,7 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		c.KZGSetup.Z = event.Z
 		c.KZGSetup.Y = Y
 		c.KZGSetup.GenerateProof()
-		kzgVerfyStruct := kzg.CreateKZGVerifier(c.KZGSetup.TS, *c.KZGSetup.Commitment, *c.KZGSetup.Y, *c.KZGSetup.Z, *c.KZGSetup.Proof)
+		kzgVerfyStruct := kzg.CreateKZGVerifier(*c.KZGSetup.TS, *c.KZGSetup.Commitment, *c.KZGSetup.Y, *c.KZGSetup.Z, *c.KZGSetup.Proof)
 		fmt.Println("ID TO IP MP Requesters is", c.IDToIPMPRequesters)
 		if c.KZGSetup.TS.Tau1 == nil || c.KZGSetup.TS.Tau2 == nil {
 			fmt.Println("TS is nil")
