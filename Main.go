@@ -189,31 +189,19 @@ func main() {
 		request := Encoding.CreateReq(1, 8, conAct.MyID, conAct.PrivateKey)
 		fmt.Println("Request Sig is", request.Sig)
 		fmt.Println("Request Hash is", request.RHash)
-		//fmt.Println("NodeIdToDialConnMap is ", conAct.NodeIdToDialConnMapResponders)
 		fmt.Println("conAct.ID is", conAct.IDs)
-		//	time.Sleep(20 * time.Second)
 
 		for ID, IP := range conAct.IDToIPMPResponders {
-			//	if !Net.IfIamArequestor(conAct.RequestorIDs, myIPAdd) {
-			///A better option may be to have NodeIdToPeerIPMap instead of extracting IP from Conn.
-			//	PeerIP, bolErr := Net.GetIPaddFromConn(conAct.NodeIdToDialConnMap[value])
-			//	if !bolErr {
-			//		log.Fatal("error while extracting IP from conn.")
-			//	}
-			//	for k,v :=range conAct.IDToIPMPResponders{
 			conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, conAct.MsgsPort)
 			fmt.Println("conAct.NodeIdToDialConnMap[value] is", conAct.NodeIdToDialConnMapResponders[ID])
-
-			//		}
 			fmt.Println("Sending request msg!!!!!!")
-			//	}
+
 		}
 		conAct.AddEncodertoNodeIDMap(conAct.NodeIdToDialConnMapResponders)
 
 		for ID, IP := range conAct.IDToIPMPResponders {
-			// fmt.Println("ID -->", ID, "IP -->", IP)
 			Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
-			// Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+			Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 		}
 		fmt.Println("the request is ", request)
 	}

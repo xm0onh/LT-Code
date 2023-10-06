@@ -119,11 +119,8 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		fmt.Println("Responser Root Node ->", c.ResponderRootNodes)
 		fmt.Println("event end Blck is", event.EndBlockId)
 		fmt.Println("event strt Blck is", event.StartBlockId)
-		// fmt.Println("Macro block id", event.MacroBlkId)
 		fmt.Println("NodeIdToDialConnMap is", c.NodeIdToDialConnMapRequestors)
 		fmt.Println("Source IP is", sourceIp)
-		//	fmt.Println("c.Decoder.MacroBlockIDToDropletSliceMap 2nd indx is", c.Decoder.MacroBlockIDToDropletSliceMap[2])
-		//	fmt.Println("c.NodeIdToDialConnMap is", c.NodeIdToDialConnMap)
 		fmt.Println("v is", v)
 		if v {
 			c.RequestCounter = c.RequestCounter + 1
@@ -236,8 +233,9 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 	case kzg.KZGRequest:
 		fmt.Println("KZG Request is received")
 		fmt.Println(event.Z)
+
 	case Timer.TimerStruct:
-		if event.IsRequesterDuration == false {
+		if event.IsRequesterDuration {
 			c.CollectRespondersTime(event.Duration)
 
 		} else {
