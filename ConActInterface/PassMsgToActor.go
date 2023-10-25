@@ -220,10 +220,8 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		c.DropletCounter = c.DropletCounter + 1
 
 		fmt.Println("Droplete countr is", c.DropletCounter)
-		if c.DropletCounter == int64(committeeSize) {
-			fmt.Println("BloomFilter Verification Time for a single block is", c.BloomFilterVerificationTime)
-		}
-		//	c.AddAndSendTimer(event)
+
+		// c.AddAndSendTimer(event)
 		//case D.Block:
 		//	c.verifyBlockAndSendVote(event)
 		//View Change case need to be done
