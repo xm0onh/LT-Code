@@ -29,7 +29,7 @@ func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Dr
 	}
 	//	decoder.LockMacroBlockIDToDropletSliceMap.Unlock()
 
-	fmt.Println("Block to droplete ID slice length is", len(decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]))
+	fmt.Println("Block to droplete ID slice length is", len(decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]), "Block ID is", droplet.BlockId, "Committee Size is", committeeSize)
 	//if len(decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]) >= 2*committeeSize {
 	if len(decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]) >= committeeSize {
 

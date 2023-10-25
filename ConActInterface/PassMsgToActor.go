@@ -140,9 +140,10 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 			}
 
 			if event.EndBlockId > event.StartBlockId {
+				rows := len(c.Decoder.MacroBlockIDToDropletSliceMap)
+				fmt.Println("Number of rows:", rows)
 				/* Dimension of MacroBlockIDToDropletSlice
-				// rows := len(c.Decoder.MacroBlockIDToDropletSliceMap)
-				// fmt.Println("Number of rows:", rows)
+
 
 				// // Assuming the 2D slice is uniform (every row has the same number of columns)
 				// if rows > 0 {
