@@ -214,9 +214,9 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		// bloomVerification := event.Bloom.Test(event.DropletHash)
 		// endTime := time.Since(strtTime).Nanoseconds()
 		// c.BloomFilterVerificationTime = c.BloomFilterVerificationTime + endTime
-		// if v && bloomVerification {
-		// 	c.Decoder.AddDropletToSlice(committeeSize, event, c.TimeCalc, &c.NodeIdToDialConnMapRequestors, c.RequestorIDs, c.MsgsPort, &c.NodeIDToEncoderMap)
-		// }
+		if v {
+			c.Decoder.AddDropletToSlice(committeeSize, event, c.TimeCalc, &c.NodeIdToDialConnMapRequestors, c.RequestorIDs, c.MsgsPort, &c.NodeIDToEncoderMap)
+		}
 		c.DropletCounter = c.DropletCounter + 1
 
 		fmt.Println("Droplete countr is", c.DropletCounter)
