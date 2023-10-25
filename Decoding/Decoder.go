@@ -48,7 +48,7 @@ func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Dr
 
 				}
 
-				//fmt.Println("TotalTime is", totalTimeTaken)
+				fmt.Println("TotalTime is", totalTimeTaken)
 			}
 		}
 
