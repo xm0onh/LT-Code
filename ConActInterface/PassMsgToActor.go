@@ -157,7 +157,7 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 					fmt.Println("Sending Each Droplet with seq i", i)
 					/////How many droplets each node has to send (depends on the max value of j)/////////
 					fmt.Println("Len MacroblockID to droplete Slice is", i, len(c.Decoder.MacroBlockIDToDropletSliceMap[i]))
-					for j := 0; j < 300; j++ {
+					for j := 0; j < 18; j++ {
 						fmt.Println("Requester nodeID is", event.NodeId)
 						fmt.Println("Requester Connection is", c.NodeIdToDialConnMapRequestors[event.NodeId])
 						fmt.Println("The index of the droplete sent is", j)
