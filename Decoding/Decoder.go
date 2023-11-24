@@ -5,6 +5,7 @@ import (
 	"encoding/gob"
 	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/xm0onh/LT-Code/Encoding"
 	N "github.com/xm0onh/LT-Code/Net"
@@ -13,12 +14,20 @@ import (
 	//	"github.com/hashicorp/vault/helper/xor"
 	"github.com/hashicorp/vault/sdk/helper/xor"
 
+	"log"
 	"net"
 	"time"
 )
 
 func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Droplet, startTime time.Time, NodeIdToDialConnMapRequestors *map[string]net.Conn, NodesSlice []string, MsgsPort string, IdToEncoderMap *map[string]*gob.Encoder) {
 	//decoder.LockMacroBlockIDToDropletSliceMap.Lock()
+	logFile, err := os.OpenFile("decoder.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer logFile.Close()
+	log.SetOutput(logFile)
+
 	if _, ok := decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]; !ok {
 		dropletSlice := make([]Encoding.Droplet, 0, committeeSize)
 		decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId] = append(dropletSlice, droplet)
@@ -38,7 +47,7 @@ func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Dr
 			decoder.Peel(droplet.BlockId)
 			if len(decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId]) == committeeSize/2 {
 				fmt.Println("Number of decoded Microblocks are", len(decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId]))
-				fmt.Println("Decoded Microblcks are", decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId])
+				// fmt.Println("Decoded Microblcks are", decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId])
 				totalTimeTaken := time.Since(startTime)
 				RequesterTimeStruct := Timer.TimerStruct{}
 				RequesterTimeStruct.Duration = totalTimeTaken.Nanoseconds()
@@ -49,6 +58,7 @@ func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Dr
 				}
 
 				fmt.Println("TotalTime is", totalTimeTaken)
+				log.Printf("Block ID %d decoded in %v\n", droplet.BlockId, totalTimeTaken)
 			}
 		}
 
