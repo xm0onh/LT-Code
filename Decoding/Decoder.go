@@ -59,7 +59,7 @@ func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Dr
 
 					}
 
-					fmt.Println("TotalTime is", totalTimeTaken)
+					// fmt.Println("TotalTime is", totalTimeTaken)
 					log.Printf("Block ID %d decoded in %v\n", droplet.BlockId, totalTimeTaken)
 				}
 			}
@@ -77,7 +77,7 @@ func (decoder *Decoder) GetSingleton(MacroBlockId int) (int, int, bool) {
 	//counter :=0
 	EdgeToBlockinSeq := 0
 	//val:=false
-	fmt.Println("Inside Get Singleton is")
+	// fmt.Println("Inside Get Singleton is")
 	//fmt.Println("decoder.MacroBlockIDToDropletSliceMap[MacroBlockId]", decoder.MacroBlockIDToDropletSliceMap[MacroBlockId])
 	for idx, droplet := range decoder.MacroBlockIDToDropletSliceMap[MacroBlockId] {
 		counter := 0
@@ -129,7 +129,7 @@ func (decoder *Decoder) Peel(blockId int) bool {
 	//fmt.Println("idx,seqIdx,bol", SingleTonIndexinDropletSliceMap,idxBlockWithinSingleton,success)
 
 	if !success {
-		fmt.Println("Failed to decode download more")
+		// fmt.Println("Failed to decode download more")
 		return false
 	}
 
@@ -185,7 +185,7 @@ func JsonDecoder(DataInBytes []byte) Encoding.MicroBlock {
 	reader := bytes.NewReader(DataInBytes)
 	err := json.NewDecoder(reader).Decode(Mc1)
 	if err != nil {
-		fmt.Println("Error during Decding is ", err)
+		// fmt.Println("Error during Decding is ", err)
 	}
 	return *Mc1
 

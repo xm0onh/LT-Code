@@ -142,8 +142,8 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 			}
 
 			if event.EndBlockId > event.StartBlockId {
-				rows := len(c.Decoder.MacroBlockIDToDropletSliceMap[0])
-				fmt.Println("Number of rows:", rows)
+				// rows := len(c.Decoder.MacroBlockIDToDropletSliceMap[0])
+				// fmt.Println("Number of rows:", rows)
 				/* Dimension of MacroBlockIDToDropletSlice
 
 
@@ -156,13 +156,13 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 				// }
 				*/
 				for i := event.StartBlockId; i <= event.EndBlockId; i++ {
-					fmt.Println("Sending Each Droplet with seq i", i)
+					// fmt.Println("Sending Each Droplet with seq i", i)
 					/////How many droplets each node has to send (depends on the max value of j)/////////
-					fmt.Println("Len MacroblockID to droplete Slice is", i, len(c.Decoder.MacroBlockIDToDropletSliceMap[i]))
+					// fmt.Println("Len MacroblockID to droplete Slice is", i, len(c.Decoder.MacroBlockIDToDropletSliceMap[i]))
 					for j := 0; j < 18; j++ {
-						fmt.Println("Requester nodeID is", event.NodeId)
-						fmt.Println("Requester Connection is", c.NodeIdToDialConnMapRequestors[event.NodeId])
-						fmt.Println("The index of the droplete sent is", j)
+						// fmt.Println("Requester nodeID is", event.NodeId)
+						// fmt.Println("Requester Connection is", c.NodeIdToDialConnMapRequestors[event.NodeId])
+						// fmt.Println("The index of the droplete sent is", j)
 
 						N.MsgSender(c.NodeIdToDialConnMapRequestors[event.NodeId], c.Decoder.MacroBlockIDToDropletSliceMap[i-1][j], sourceIp, event.NodeId, c.MsgsPort, &c.NodeIdToDialConnMapRequestors, &c.NodeIDToEncoderMap)
 						time.Sleep(20 * time.Millisecond)
@@ -184,14 +184,14 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 
 					//go
 					N.MsgSender(c.NodeIdToDialConnMapRequestors[event.NodeId], c.Decoder.MacroBlockIDToDropletSliceMap[event.StartBlockId][i], sourceIp, event.NodeId, c.MsgsPort, &c.NodeIdToDialConnMapRequestors, &c.NodeIDToEncoderMap)
-					fmt.Println("Decoder sent with index", i)
+					// fmt.Println("Decoder sent with index", i)
 				}
 			}
 			// Decoding.SendDroplets(event,c.NodeIdToDialConnMap[event.NodeId],c.Decoder.MacroBlockIDToDropletSliceMap[event.MacroBlkId][MyIndx],sourceIp,c.MyID,c.MsgsPort,&c.NodeIdToDialConnMap)
 			// go	N.MsgSender(c.NodeIdToDialConnMap[event.NodeId],c.Decoder.MacroBlockIDToDropletSliceMap[event.MacroBlkId][MyIndx],sourceIp,c.MyID,c.MsgsPort,&c.NodeIdToDialConnMap)
 			c.RequestResponseTimeCounter += int64(time.Since(currentTime))
 			if c.RequestCounter == int64(len(c.RequestorIDs)) {
-				fmt.Println("Total Responder Time is", c.RequestResponseTimeCounter)
+				// fmt.Println("Total Responder Time is", c.RequestResponseTimeCounter)
 				for i := 0; i < len(c.RequestorIDs); i++ {
 					//	N.TimeDurationMsgSender(c.NodeIdToDialConnMapRequestors[c.RequestorIDs[i]],c.RequestResponseTimeCounter,sourceIp,c.MyID,c.MsgsPort,&c.NodeIdToDialConnMapRequestors)
 					ResponderTimerStruct := Timer.TimerStruct{}
@@ -212,7 +212,7 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 
 		v := event.Verify(c.MapIDToPbKey)
 		// fmt.Println("Received Droplet is", event)
-		fmt.Println("Droplet verification is", v)
+		//	 //// fmt.Println("Droplet verification is", v)
 		// strtTime := time.Now()
 		// bloomVerification := event.Bloom.Test(event.DropletHash)
 		// endTime := time.Since(strtTime).Nanoseconds()
@@ -222,7 +222,7 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		}
 		c.DropletCounter = c.DropletCounter + 1
 
-		fmt.Println("Droplete countr is", c.DropletCounter)
+		// fmt.Println("Droplete countr is", c.DropletCounter)
 
 		// c.AddAndSendTimer(event)
 		//case D.Block:
@@ -236,15 +236,15 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 		}
 
 	case kzg.KZGRequest:
-		fmt.Println("KZG Request is received")
+		// fmt.Println("KZG Request is received")
 		fmt.Println(event.Z)
 		Y := c.KZGSetup.EvaluatePolynomial(event.Z)
-		fmt.Println("Y -->", Y)
+		// fmt.Println("Y -->", Y)
 		c.KZGSetup.Z = event.Z
 		c.KZGSetup.Y = Y
 		c.KZGSetup.GenerateProof()
 		kzgVerfyStruct := kzg.CreateKZGVerifier(*c.KZGSetup.TS, *c.KZGSetup.Commitment, *c.KZGSetup.Y, *c.KZGSetup.Z, *c.KZGSetup.Proof)
-		fmt.Println("ID TO IP MP Requesters is", c.IDToIPMPRequesters)
+		// fmt.Println("ID TO IP MP Requesters is", c.IDToIPMPRequesters)
 		sizeInBytes := unsafe.Sizeof(c.KZGSetup.Proof)
 		sizeInKB := float64(sizeInBytes) / 1024.0
 		fmt.Printf("Size of Proof: %f KB\n", sizeInKB)
@@ -276,14 +276,14 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 
 		}
 		for ID, IP := range c.IDToIPMPRequesters {
-			fmt.Println("ID", ID)
-			fmt.Println("IP", IP)
-			fmt.Println("c.NodeIdToDialConnMapRequestors[ID]", c.NodeIdToDialConnMapRequestors)
+			// fmt.Println("ID", ID)
+			// fmt.Println("IP", IP)
+			// fmt.Println("c.NodeIdToDialConnMapRequestors[ID]", c.NodeIdToDialConnMapRequestors)
 			N.KZGZVerifier(c.NodeIdToDialConnMapRequestors[ID], *kzgVerfyStruct, IP, ID, c.MsgsPort, &c.NodeIdToDialConnMapRequestors, &c.NodeIDToEncoderMap)
 		}
 
 	case kzg.KZGVerify:
-		fmt.Println("KZG Verify is received")
+		// fmt.Println("KZG Verify is received")
 		v := event.VerifyKZGProof()
 		if v {
 
