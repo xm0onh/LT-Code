@@ -1,8 +1,6 @@
 package main
 
 import (
-	"sync"
-
 	"github.com/bits-and-blooms/bloom"
 	Con "github.com/xm0onh/LT-Code/ConActInterface"
 	kzg "github.com/xm0onh/LT-Code/KZG"
@@ -176,91 +174,92 @@ func main() {
 
 	//}
 	conAct.TimeCalc = time.Now()
-	// if Net.IfIamArequestor(conAct.RequestorIDs, conAct.MyID) {
-
-	// 	fmt.Println(" I am a requestor!")
-	// 	kzgReq := kzg.CreateKZGRequest()
-	// 	totalBlocks := numberofMacroBlocks
-	// 	blocksForNode1 := totalBlocks / 2 // Half of the blocks for Node 1
-	// 	// blocksForNode2 := totalBlocks - blocksForNode1 // Remaining blocks for Node 2
-
-	// 	request := Encoding.CreateReq(1, blocksForNode1, conAct.MyID, conAct.PrivateKey)
-	// 	request2 := Encoding.CreateReq(blocksForNode1+1, totalBlocks, conAct.MyID, conAct.PrivateKey)
-	// 	fmt.Println("Request Sig is", request.Sig)
-	// 	fmt.Println("Request Hash is", request.RHash)
-	// 	fmt.Println("conAct.ID is", conAct.IDs)
-
-	// 	for ID, IP := range conAct.IDToIPMPResponders {
-	// 		conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, conAct.MsgsPort)
-	// 		conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, port2)
-	// 		fmt.Println("conAct.NodeIdToDialConnMap[value] is", conAct.NodeIdToDialConnMapResponders[ID])
-	// 		fmt.Println("Sending request msg!!!!!!")
-
-	// 	}
-	// 	conAct.AddEncodertoNodeIDMap(conAct.NodeIdToDialConnMapResponders)
-
-	// 	for ID, IP := range conAct.IDToIPMPResponders {
-	// 		go Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
-	// 		go Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, port2, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
-	// 		fmt.Println(<-conAct.KZGVerficationStatus)
-	// 		fmt.Println("Test after Verification")
-	// 		Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
-	// 		Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request2, IP, ID, port2, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
-
-	// 	}
-	// 	fmt.Println("the request is ", request)
-
-	// 	// test with 2 nodes
-	// }
-
-	/// Test with many nodes concurrently
 	if Net.IfIamArequestor(conAct.RequestorIDs, conAct.MyID) {
-		fmt.Println("I am a requestor!")
+
+		fmt.Println(" I am a requestor!")
 		kzgReq := kzg.CreateKZGRequest()
 		totalBlocks := numberofMacroBlocks
-		blocksPerResponder := totalBlocks / maxResponders // Calculate blocks per responder
+		blocksForNode1 := totalBlocks / 2 // Half of the blocks for Node 1
+		// blocksForNode2 := totalBlocks - blocksForNode1 // Remaining blocks for Node 2
 
-		// Use a WaitGroup to wait for all goroutines to finish
-		var wg sync.WaitGroup
+		request := Encoding.CreateReq(1, blocksForNode1, conAct.MyID, conAct.PrivateKey)
+		request2 := Encoding.CreateReq(blocksForNode1+1, totalBlocks, conAct.MyID, conAct.PrivateKey)
+		fmt.Println("Request Sig is", request.Sig)
+		fmt.Println("Request Hash is", request.RHash)
+		fmt.Println("conAct.ID is", conAct.IDs)
+		port2 := "18003"
 
-		// Loop over each responder to create and send requests
-		for responderIndex := 0; responderIndex < maxResponders; responderIndex++ {
-			startBlock := responderIndex*blocksPerResponder + 1
-			endBlock := startBlock + blocksPerResponder - 1
-			if responderIndex == maxResponders-1 {
-				endBlock = totalBlocks // Ensure the last responder covers all remaining blocks
-			}
+		for ID, IP := range conAct.IDToIPMPResponders {
+			conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, conAct.MsgsPort)
+			conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, port2)
+			fmt.Println("conAct.NodeIdToDialConnMap[value] is", conAct.NodeIdToDialConnMapResponders[ID])
+			fmt.Println("Sending request msg!!!!!!")
 
-			// Increment the WaitGroup counter
-			wg.Add(1)
-
-			// Create and send the request in a new goroutine
-			go func(responderIndex int, startBlock, endBlock int) {
-				defer wg.Done() // Decrement the counter when the goroutine completes
-				for ID, IP := range conAct.IDToIPMPResponders {
-					request := Encoding.CreateReq(startBlock, endBlock, conAct.MyID, conAct.PrivateKey)
-					fmt.Println("Request Sig is", request.Sig)
-					fmt.Println("Request Hash is", request.RHash)
-
-					// The IP address is the same for all responders (local machine IP)
-					// IP := myIPAdd                          // Assuming myIPAdd is the IP of the local machine
-					port := responderPorts[responderIndex] // Get the port for the current responder
-
-					conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, port)
-					fmt.Println("Dialing responder on port:", port)
-
-					// Send KZG requests and the request message
-					Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, responderPorts[responderIndex], port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
-					Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, responderPorts[responderIndex], port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
-					fmt.Println("Request sent to responder on port:", port)
-				}
-			}(responderIndex, startBlock, endBlock)
 		}
+		conAct.AddEncodertoNodeIDMap(conAct.NodeIdToDialConnMapResponders)
 
-		// Wait for all goroutines to finish
-		wg.Wait()
-		fmt.Println("All requests have been sent")
+		for ID, IP := range conAct.IDToIPMPResponders {
+			go Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+			go Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, port2, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+			fmt.Println(<-conAct.KZGVerficationStatus)
+			fmt.Println("Test after Verification")
+			Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+			Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request2, IP, ID, port2, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+
+		}
+		fmt.Println("the request is ", request)
+
+		// test with 2 nodes
 	}
+
+	/// Test with many nodes concurrently
+	// if Net.IfIamArequestor(conAct.RequestorIDs, conAct.MyID) {
+	// 	fmt.Println("I am a requestor!")
+	// 	kzgReq := kzg.CreateKZGRequest()
+	// 	totalBlocks := numberofMacroBlocks
+	// 	blocksPerResponder := totalBlocks / maxResponders // Calculate blocks per responder
+
+	// 	// Use a WaitGroup to wait for all goroutines to finish
+	// 	var wg sync.WaitGroup
+
+	// 	// Loop over each responder to create and send requests
+	// 	for responderIndex := 0; responderIndex < maxResponders; responderIndex++ {
+	// 		startBlock := responderIndex*blocksPerResponder + 1
+	// 		endBlock := startBlock + blocksPerResponder - 1
+	// 		if responderIndex == maxResponders-1 {
+	// 			endBlock = totalBlocks // Ensure the last responder covers all remaining blocks
+	// 		}
+
+	// 		// Increment the WaitGroup counter
+	// 		wg.Add(1)
+
+	// 		// Create and send the request in a new goroutine
+	// 		go func(responderIndex int, startBlock, endBlock int) {
+	// 			defer wg.Done() // Decrement the counter when the goroutine completes
+	// 			for ID, IP := range conAct.IDToIPMPResponders {
+	// 				request := Encoding.CreateReq(startBlock, endBlock, conAct.MyID, conAct.PrivateKey)
+	// 				fmt.Println("Request Sig is", request.Sig)
+	// 				fmt.Println("Request Hash is", request.RHash)
+
+	// 				// The IP address is the same for all responders (local machine IP)
+	// 				// IP := myIPAdd                          // Assuming myIPAdd is the IP of the local machine
+	// 				port := responderPorts[responderIndex] // Get the port for the current responder
+
+	// 				conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, port)
+	// 				fmt.Println("Dialing responder on port:", port)
+
+	// 				// Send KZG requests and the request message
+	// 				Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, responderPorts[responderIndex], port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+	// 				Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, responderPorts[responderIndex], port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+	// 				fmt.Println("Request sent to responder on port:", port)
+	// 			}
+	// 		}(responderIndex, startBlock, endBlock)
+	// 	}
+
+	// 	// Wait for all goroutines to finish
+	// 	wg.Wait()
+	// 	fmt.Println("All requests have been sent")
+	// }
 
 	idle()
 
