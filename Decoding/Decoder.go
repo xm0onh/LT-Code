@@ -43,6 +43,7 @@ func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Dr
 	if len(decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]) >= committeeSize {
 
 		//	decoder.IfDropletIsReadyToBeDecoded[droplet.BlockId]=true
+		fmt.Println("Blocks", len(decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock))
 		if _, blockExists := decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId]; !blockExists {
 
 			for i := 0; i < len(decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]); i++ {
