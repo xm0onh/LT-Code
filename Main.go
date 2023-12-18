@@ -167,7 +167,7 @@ func main() {
 
 		fmt.Println(" I am a requestor!")
 		kzgReq := kzg.CreateKZGRequest()
-		request := Encoding.CreateReq(0, 2, conAct.MyID, conAct.PrivateKey)
+		request := Encoding.CreateReq(1, 3, conAct.MyID, conAct.PrivateKey)
 		fmt.Println("Request Sig is", request.Sig)
 		fmt.Println("Request Hash is", request.RHash)
 		fmt.Println("conAct.ID is", conAct.IDs)
@@ -190,7 +190,7 @@ func main() {
 
 		// test with 2 nodes
 		go func() {
-			request2 := Encoding.CreateReq(2, 3, conAct.MyID, conAct.PrivateKey)
+			request2 := Encoding.CreateReq(1, 3, conAct.MyID, conAct.PrivateKey)
 			fmt.Println("Request Sig is req 2", request2.Sig)
 			fmt.Println("Request Hash is req 2", request2.RHash)
 			fmt.Println("conAct.ID is req 2", conAct.IDs)
