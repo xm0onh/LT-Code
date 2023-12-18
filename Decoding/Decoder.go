@@ -43,22 +43,25 @@ func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Dr
 	if len(decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]) >= committeeSize {
 
 		//	decoder.IfDropletIsReadyToBeDecoded[droplet.BlockId]=true
-		for i := 0; i < len(decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]); i++ {
-			decoder.Peel(droplet.BlockId)
-			if len(decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId]) == committeeSize/2 {
-				// fmt.Println("Number of decoded Microblocks are", len(decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId]))
-				// fmt.Println("Decoded Microblcks are", decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId])
-				totalTimeTaken := time.Since(startTime)
-				RequesterTimeStruct := Timer.TimerStruct{}
-				RequesterTimeStruct.Duration = totalTimeTaken.Nanoseconds()
-				///Msg sender needs to be adjusted.
-				for j := 0; j < len(*NodeIdToDialConnMapRequestors); j++ {
-					N.MsgSender((*NodeIdToDialConnMapRequestors)[NodesSlice[j]], RequesterTimeStruct, (*NodeIdToDialConnMapRequestors)[NodesSlice[j]].RemoteAddr().String(), NodesSlice[j], MsgsPort, NodeIdToDialConnMapRequestors, IdToEncoderMap)
+		if _, blockExists := decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId]; !blockExists {
 
+			for i := 0; i < len(decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]); i++ {
+				decoder.Peel(droplet.BlockId)
+				if len(decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId]) == committeeSize/2 {
+					// fmt.Println("Number of decoded Microblocks are", len(decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId]))
+					// fmt.Println("Decoded Microblcks are", decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId])
+					totalTimeTaken := time.Since(startTime)
+					RequesterTimeStruct := Timer.TimerStruct{}
+					RequesterTimeStruct.Duration = totalTimeTaken.Nanoseconds()
+					///Msg sender needs to be adjusted.
+					for j := 0; j < len(*NodeIdToDialConnMapRequestors); j++ {
+						N.MsgSender((*NodeIdToDialConnMapRequestors)[NodesSlice[j]], RequesterTimeStruct, (*NodeIdToDialConnMapRequestors)[NodesSlice[j]].RemoteAddr().String(), NodesSlice[j], MsgsPort, NodeIdToDialConnMapRequestors, IdToEncoderMap)
+
+					}
+
+					fmt.Println("TotalTime is", totalTimeTaken)
+					log.Printf("Block ID %d decoded in %v\n", droplet.BlockId, totalTimeTaken)
 				}
-
-				fmt.Println("TotalTime is", totalTimeTaken)
-				log.Printf("Block ID %d decoded in %v\n", droplet.BlockId, totalTimeTaken)
 			}
 		}
 
