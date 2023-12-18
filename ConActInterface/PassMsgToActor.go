@@ -113,7 +113,7 @@ func CreateConActor(mapSize int, privKey kyber.Scalar) *ConActor {
 }
 
 func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp string) {
-	fmt.Println("I am Responder and my Node id is:", c.MyID)
+	// fmt.Println("I am Responder and my Node id is:", c.MyID)
 
 	switch event := event.(type) {
 	case Enc.Request:

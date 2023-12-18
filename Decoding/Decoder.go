@@ -158,12 +158,12 @@ func (decoder *Decoder) RemoveNeighborsFromSingleton(SingleTonIndexinDropletSlic
 	decoder.MacroBlockIDToDropletSliceMap[blockId][SingleTonIndexinDropletSliceMap] = decoder.MacroBlockIDToDropletSliceMap[blockId][len(decoder.MacroBlockIDToDropletSliceMap[blockId])-1]
 	decoder.MacroBlockIDToDropletSliceMap[blockId] = decoder.MacroBlockIDToDropletSliceMap[blockId][:len(decoder.MacroBlockIDToDropletSliceMap[blockId])-1]
 	//decoder.MacroBlockIDToDropletSliceMap[blockId]=append(decoder.MacroBlockIDToDropletSliceMap[blockId][:SingleTonIndexinDropletSliceMap],decoder.MacroBlockIDToDropletSliceMap[blockId][SingleTonIndexinDropletSliceMap+1:]...)
-	var err error
+	// var err error
 	for idx, _ := range decoder.MacroBlockIDToDropletSliceMap[blockId] {
 		if decoder.MacroBlockIDToDropletSliceMap[blockId][idx].SeqMicroBlockSlice[idxBlockWithinSingleton] == true {
 			neighboringXorBlocks, singletonBlock := Encoding.CheckAndAddPadding(decoder.MacroBlockIDToDropletSliceMap[blockId][idx].XorMicroBlocks, singleton.XorMicroBlocks)
-			decoder.MacroBlockIDToDropletSliceMap[blockId][idx].XorMicroBlocks, err = xor.XORBytes(neighboringXorBlocks, singletonBlock)
-			fmt.Println("Error is", err)
+			decoder.MacroBlockIDToDropletSliceMap[blockId][idx].XorMicroBlocks, _ = xor.XORBytes(neighboringXorBlocks, singletonBlock)
+			// fmt.Println("Error is", err)
 		}
 		decoder.MacroBlockIDToDropletSliceMap[blockId][idx].SeqMicroBlockSlice[idxBlockWithinSingleton] = false
 
