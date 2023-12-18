@@ -14,18 +14,19 @@ import (
 	//	"github.com/hashicorp/vault/helper/xor"
 	"github.com/hashicorp/vault/sdk/helper/xor"
 
+	"log"
 	"net"
 	"time"
 )
 
 func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Droplet, startTime time.Time, NodeIdToDialConnMapRequestors *map[string]net.Conn, NodesSlice []string, MsgsPort string, IdToEncoderMap *map[string]*gob.Encoder) {
 	//decoder.LockMacroBlockIDToDropletSliceMap.Lock()
-	file, err := os.OpenFile("decoder.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	logFile, err := os.OpenFile("decoder.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		fmt.Println("Error opening file:", err)
-		return
+		log.Fatal(err)
 	}
-	defer file.Close()
+	defer logFile.Close()
+	log.SetOutput(logFile)
 
 	if _, ok := decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]; !ok {
 		dropletSlice := make([]Encoding.Droplet, 0, committeeSize)
@@ -57,10 +58,7 @@ func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Dr
 				}
 
 				fmt.Println("TotalTime is", totalTimeTaken)
-				_, err = fmt.Fprintf(file, ("Block ID %d decoded in %v\n"), droplet.BlockId, totalTimeTaken)
-				if err != nil {
-					fmt.Println("Error writing to file:", err)
-				}
+				log.Printf("Block ID %d decoded in %v\n", droplet.BlockId, totalTimeTaken)
 			}
 		}
 

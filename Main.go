@@ -19,7 +19,7 @@ import (
 )
 
 func main() {
-
+	//
 	/////////////////Network Implementation///////////
 	gob.Register(Encoding.Droplet{})
 	gob.Register(Encoding.Request{})
@@ -112,7 +112,7 @@ func main() {
 
 	CommitteeSize := 2 * numberOfMicroBlocks
 	conAct.MsgsPort = "18002"
-
+	port2 := "18003"
 	myIPAdd, errip := Net.IPaddress()
 
 	//	myAdd:="192.168.4.1"
@@ -121,6 +121,7 @@ func main() {
 	}
 	// var ConNetInf ConActAndNetInterface.NetworkToConActInterface
 	Net.InitListener(myIPAdd, conAct.MsgsPort, conAct, CommitteeSize)
+	Net.InitListener(myIPAdd, port2, conAct, CommitteeSize)
 	for indx, value := range pubkeys {
 		fmt.Println("Index in pubkeySlice is", indx)
 		conAct.MapIDToPbKey[conAct.IDs[indx]] = value
