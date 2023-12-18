@@ -244,7 +244,7 @@ func main() {
 				// The IP address is the same for all responders (local machine IP)
 				// IP := myIPAdd                          // Assuming myIPAdd is the IP of the local machine
 				port := responderPorts[responderIndex] // Get the port for the current responder
-
+				fmt.Println("Port is", port)
 				conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, port)
 				fmt.Println("Dialing responder on port:", port)
 
