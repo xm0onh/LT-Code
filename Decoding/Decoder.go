@@ -38,7 +38,7 @@ func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Dr
 	}
 	//	decoder.LockMacroBlockIDToDropletSliceMap.Unlock()
 
-	fmt.Println("Block to droplete ID slice length is", len(decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]), "Block ID is", droplet.BlockId, "Committee Size is", committeeSize)
+	// fmt.Println("Block to droplete ID slice length is", len(decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]), "Block ID is", droplet.BlockId, "Committee Size is", committeeSize)
 	//if len(decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]) >= 2*committeeSize {
 	if len(decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]) >= committeeSize {
 
@@ -46,7 +46,7 @@ func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Dr
 		for i := 0; i < len(decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]); i++ {
 			decoder.Peel(droplet.BlockId)
 			if len(decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId]) == committeeSize/2 {
-				fmt.Println("Number of decoded Microblocks are", len(decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId]))
+				// fmt.Println("Number of decoded Microblocks are", len(decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId]))
 				// fmt.Println("Decoded Microblcks are", decoder.Blockchain.MapMacroBlockNumToMapMiroBlockHashToMicroBlock[droplet.BlockId])
 				totalTimeTaken := time.Since(startTime)
 				RequesterTimeStruct := Timer.TimerStruct{}

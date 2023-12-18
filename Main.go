@@ -167,7 +167,7 @@ func main() {
 
 		fmt.Println(" I am a requestor!")
 		kzgReq := kzg.CreateKZGRequest()
-		request := Encoding.CreateReq(1, 3, conAct.MyID, conAct.PrivateKey)
+		request := Encoding.CreateReq(0, 2, conAct.MyID, conAct.PrivateKey)
 		fmt.Println("Request Sig is", request.Sig)
 		fmt.Println("Request Hash is", request.RHash)
 		fmt.Println("conAct.ID is", conAct.IDs)
@@ -187,6 +187,28 @@ func main() {
 			Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 		}
 		fmt.Println("the request is ", request)
+
+		// test with 2 nodes
+		request2 := Encoding.CreateReq(2, 3, conAct.MyID, conAct.PrivateKey)
+		fmt.Println("Request Sig is req 2", request2.Sig)
+		fmt.Println("Request Hash is req 2", request2.RHash)
+		fmt.Println("conAct.ID is req 2", conAct.IDs)
+
+		for ID, IP := range conAct.IDToIPMPResponders {
+			conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, port2)
+			fmt.Println("conAct.NodeIdToDialConnMap[value] is", conAct.NodeIdToDialConnMapResponders[ID])
+			fmt.Println("Sending request msg!!!!!!")
+
+		}
+		conAct.AddEncodertoNodeIDMap(conAct.NodeIdToDialConnMapResponders)
+
+		for ID, IP := range conAct.IDToIPMPResponders {
+			go Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, port2, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+			fmt.Println(<-conAct.KZGVerficationStatus)
+			fmt.Println("Test after Verification")
+			Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request2, IP, ID, port2, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+		}
+		fmt.Println("the request is ", request2)
 	}
 
 	idle()
