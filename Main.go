@@ -237,22 +237,23 @@ func main() {
 			// Create and send the request in a new goroutine
 			go func(responderIndex int, startBlock, endBlock int) {
 				defer wg.Done() // Decrement the counter when the goroutine completes
-				ID := conAct.IDToIPMPResponders[conAct.ResponderRootNodes[responderIndex]]
-				request := Encoding.CreateReq(startBlock, endBlock, conAct.MyID, conAct.PrivateKey)
-				fmt.Println("Request Sig is", request.Sig)
-				fmt.Println("Request Hash is", request.RHash)
+				for ID, IP := range conAct.IDToIPMPResponders {
+					request := Encoding.CreateReq(startBlock, endBlock, conAct.MyID, conAct.PrivateKey)
+					fmt.Println("Request Sig is", request.Sig)
+					fmt.Println("Request Hash is", request.RHash)
 
-				// The IP address is the same for all responders (local machine IP)
-				IP := myIPAdd                          // Assuming myIPAdd is the IP of the local machine
-				port := responderPorts[responderIndex] // Get the port for the current responder
+					// The IP address is the same for all responders (local machine IP)
+					// IP := myIPAdd                          // Assuming myIPAdd is the IP of the local machine
+					port := responderPorts[responderIndex] // Get the port for the current responder
 
-				conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, port)
-				fmt.Println("Dialing responder on port:", port)
+					conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, port)
+					fmt.Println("Dialing responder on port:", port)
 
-				// Send KZG requests and the request message
-				Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, responderPorts[responderIndex], port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
-				Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, responderPorts[responderIndex], port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
-				fmt.Println("Request sent to responder on port:", port)
+					// Send KZG requests and the request message
+					Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, responderPorts[responderIndex], port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+					Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, responderPorts[responderIndex], port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+					fmt.Println("Request sent to responder on port:", port)
+				}
 			}(responderIndex, startBlock, endBlock)
 		}
 
