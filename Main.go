@@ -249,8 +249,8 @@ func main() {
 				fmt.Println("Dialing responder on port:", port)
 
 				// Send KZG requests and the request message
-				Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, responderPorts[responderIndex], port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
-				Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, responderPorts[responderIndex], port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+				Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+				Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 				fmt.Println("Request sent to responder on port:", port)
 			}
 
