@@ -178,7 +178,7 @@ func main() {
 		fmt.Println("conAct.ID is", conAct.IDs)
 
 		for ID, IP := range conAct.IDToIPMPResponders {
-			conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, port2)
+			conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, conAct.MsgsPort)
 			conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, port2)
 			fmt.Println("conAct.NodeIdToDialConnMap[value] is", conAct.NodeIdToDialConnMapResponders[ID])
 			fmt.Println("Sending request msg!!!!!!")
@@ -187,11 +187,11 @@ func main() {
 		conAct.AddEncodertoNodeIDMap(conAct.NodeIdToDialConnMapResponders)
 
 		for ID, IP := range conAct.IDToIPMPResponders {
-			go Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, port2, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+			go Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 			go Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, port2, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 			fmt.Println(<-conAct.KZGVerficationStatus)
 			fmt.Println("Test after Verification")
-			Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, port2, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+			Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, conAct.MsgsPort, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 			Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request2, IP, ID, port2, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 
 		}
