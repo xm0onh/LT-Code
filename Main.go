@@ -251,7 +251,7 @@ func main() {
 					conAct.NodeIdToDialConnMapResponders[ID] = conn
 					fmt.Println("Dialing responder:", ID, "at IP:", IP, "on port:", responderPorts[responderIndex])
 
-					Net.KZGZSender(conn, kzgReq, IP, ID, responderPorts[responderIndex], &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+					go Net.KZGZSender(conn, kzgReq, IP, ID, responderPorts[responderIndex], &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 					Net.MsgSender(conn, request, IP, ID, responderPorts[responderIndex], &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 				}
 			}(responderIndex)
