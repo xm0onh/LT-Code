@@ -263,7 +263,7 @@ func main() {
 
 					// It's safe to launch goroutines that read from the map without locking
 					go Net.KZGZSender(conn, kzgReq, IP, ID, responderPorts[responderIndex], &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
-					go Net.MsgSender(conn, request, IP, ID, responderPorts[responderIndex], &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+					Net.MsgSender(conn, request, IP, ID, responderPorts[responderIndex], &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 				}
 			}(responderIndex)
 		}
