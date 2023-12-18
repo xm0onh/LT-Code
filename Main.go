@@ -183,7 +183,7 @@ func main() {
 		// blocksForNode2 := totalBlocks - blocksForNode1 // Remaining blocks for Node 2
 
 		request := Encoding.CreateReq(1, blocksForNode1, conAct.MyID, conAct.PrivateKey)
-		request2 := Encoding.CreateReq(blocksForNode1+1, totalBlocks, conAct.MyID, conAct.PrivateKey)
+		request2 := Encoding.CreateReq(blocksForNode1, totalBlocks, conAct.MyID, conAct.PrivateKey)
 		fmt.Println("Request Sig is", request.Sig)
 		fmt.Println("Request Hash is", request.RHash)
 		fmt.Println("conAct.ID is", conAct.IDs)
