@@ -5,6 +5,7 @@ import (
 	"encoding/gob"
 	"fmt"
 	"log"
+	"sync"
 	"unsafe"
 
 	"github.com/xm0onh/LT-Code/Decoding"
@@ -69,6 +70,7 @@ type ConActor struct {
 	KZGSetup                    kzg.KZGSetup
 	BloomFilterVerificationTime int64
 	KZGVerficationStatus        chan bool
+	Mutex                       sync.Mutex
 }
 
 func CreateConActor(mapSize int, privKey kyber.Scalar) *ConActor {

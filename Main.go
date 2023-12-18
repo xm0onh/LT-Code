@@ -248,11 +248,22 @@ func main() {
 				for ID, IP := range conAct.IDToIPMPResponders {
 					// Dial the responder and send the KZG request and the block request
 					conn := Net.DialNode(IP, responderPorts[responderIndex])
+					// if err != nil {
+					// 	fmt.Println("Error dialing responder:", err)
+					// 	continue // Skip this responder if there's an error
+					// }
+
+					// Lock the mutex before accessing the shared map
+					conAct.Mutex.Lock()
 					conAct.NodeIdToDialConnMapResponders[ID] = conn
+					// Unlock the mutex after accessing the shared map
+					conAct.Mutex.Unlock()
+
 					fmt.Println("Dialing responder:", ID, "at IP:", IP, "on port:", responderPorts[responderIndex])
 
+					// It's safe to launch goroutines that read from the map without locking
 					go Net.KZGZSender(conn, kzgReq, IP, ID, responderPorts[responderIndex], &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
-					Net.MsgSender(conn, request, IP, ID, responderPorts[responderIndex], &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+					go Net.MsgSender(conn, request, IP, ID, responderPorts[responderIndex], &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 				}
 			}(responderIndex)
 		}
