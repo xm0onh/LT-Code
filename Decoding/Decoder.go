@@ -5,7 +5,6 @@ import (
 	"encoding/gob"
 	"encoding/json"
 	"fmt"
-	"os"
 
 	"github.com/xm0onh/LT-Code/Encoding"
 	N "github.com/xm0onh/LT-Code/Net"
@@ -14,19 +13,18 @@ import (
 	//	"github.com/hashicorp/vault/helper/xor"
 	"github.com/hashicorp/vault/sdk/helper/xor"
 
-	"log"
 	"net"
 	"time"
 )
 
 func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Droplet, startTime time.Time, NodeIdToDialConnMapRequestors *map[string]net.Conn, NodesSlice []string, MsgsPort string, IdToEncoderMap *map[string]*gob.Encoder) {
 	//decoder.LockMacroBlockIDToDropletSliceMap.Lock()
-	logFile, err := os.OpenFile("decoder.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
-	// defer logFile.Close()
-	log.SetOutput(logFile)
+	// logFile, err := os.OpenFile("decoder.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// // defer logFile.Close()
+	// log.SetOutput(logFile)
 
 	if _, ok := decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]; !ok {
 		dropletSlice := make([]Encoding.Droplet, 0, committeeSize)
@@ -61,11 +59,11 @@ func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Dr
 					}
 
 					// fmt.Println("TotalTime is", totalTimeTaken)
-					log.Printf("Block ID %d decoded in %v\n", droplet.BlockId, totalTimeTaken)
-					err = logFile.Close()
-					if err != nil {
-						log.Fatal(err)
-					}
+					// log.Printf("Block ID %d decoded in %v\n", droplet.BlockId, totalTimeTaken)
+					// err = logFile.Close()
+					// if err != nil {
+					// 	log.Fatal(err)
+					// }
 				}
 			}
 		}

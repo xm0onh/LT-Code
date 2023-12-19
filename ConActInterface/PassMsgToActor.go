@@ -191,7 +191,7 @@ func (c *ConActor) PassMsgToActor(event interface{}, committeeSize int, sourceIp
 			// go	N.MsgSender(c.NodeIdToDialConnMap[event.NodeId],c.Decoder.MacroBlockIDToDropletSliceMap[event.MacroBlkId][MyIndx],sourceIp,c.MyID,c.MsgsPort,&c.NodeIdToDialConnMap)
 			c.RequestResponseTimeCounter += int64(time.Since(currentTime))
 			if c.RequestCounter == int64(len(c.RequestorIDs)) {
-				// fmt.Println("Total Responder Time is", c.RequestResponseTimeCounter)
+				fmt.Println("Total Responder Time is", c.RequestResponseTimeCounter)
 				for i := 0; i < len(c.RequestorIDs); i++ {
 					//	N.TimeDurationMsgSender(c.NodeIdToDialConnMapRequestors[c.RequestorIDs[i]],c.RequestResponseTimeCounter,sourceIp,c.MyID,c.MsgsPort,&c.NodeIdToDialConnMapRequestors)
 					ResponderTimerStruct := Timer.TimerStruct{}
