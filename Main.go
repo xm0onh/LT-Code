@@ -176,7 +176,7 @@ func main() {
 	conAct.TimeCalc = time.Now()
 	if Net.IfIamArequestor(conAct.RequestorIDs, conAct.MyID) {
 
-		// fmt.Println(" I am a requestor!")
+		fmt.Println(" I am a requestor!")
 		kzgReq := kzg.CreateKZGRequest()
 		totalBlocks := numberofMacroBlocks
 		// blocksForNode1 := totalBlocks / 2 // Half of the blocks for Node 1
@@ -199,8 +199,8 @@ func main() {
 				for ID, IP := range conAct.IDToIPMPResponders {
 					conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, port)
 					// conAct.NodeIdToDialConnMapResponders[ID] = Net.DialNode(IP, port2)
-					// fmt.Println("conAct.NodeIdToDialConnMap[value] is", conAct.NodeIdToDialConnMapResponders[ID])
-					// fmt.Println("Sending request msg!!!!!!")
+					fmt.Println("conAct.NodeIdToDialConnMap[value] is", conAct.NodeIdToDialConnMapResponders[ID])
+					fmt.Println("Sending request msg!!!!!!")
 
 				}
 				conAct.AddEncodertoNodeIDMap(conAct.NodeIdToDialConnMapResponders)
