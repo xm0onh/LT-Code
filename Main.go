@@ -182,7 +182,7 @@ func main() {
 		// blocksForNode1 := totalBlocks / 2 // Half of the blocks for Node 1
 		// blocksForNode2 := totalBlocks - blocksForNode1 // Remaining blocks for Node 2
 		blocksPerResponder := totalBlocks / maxResponders
-		for responderIndex := 0; responderIndex < 2; responderIndex++ {
+		for responderIndex := 0; responderIndex < 10; responderIndex++ {
 			go func(responderIndex int) {
 				startBlock := responderIndex*blocksPerResponder + 1
 				endBlock := startBlock + blocksPerResponder - 1
