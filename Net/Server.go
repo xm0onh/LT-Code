@@ -218,7 +218,7 @@ func  TimeDurationleconnection(conn net.Conn,conInterface CNI.NetworkToConActInt
 */
 
 func GetIPaddFromConn(conn net.Conn) (string, bool) {
-	// fmt.Println(" conn is ", conn)
+	fmt.Println(" conn is ", conn)
 	if add, ok := conn.RemoteAddr().(*net.TCPAddr); ok {
 		return add.IP.String(), true
 
