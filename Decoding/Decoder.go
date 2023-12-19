@@ -25,7 +25,7 @@ func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Dr
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer logFile.Close()
+	// defer logFile.Close()
 	log.SetOutput(logFile)
 
 	if _, ok := decoder.MacroBlockIDToDropletSliceMap[droplet.BlockId]; !ok {
@@ -62,6 +62,10 @@ func (decoder *Decoder) AddDropletToSlice(committeeSize int, droplet Encoding.Dr
 
 					// fmt.Println("TotalTime is", totalTimeTaken)
 					log.Printf("Block ID %d decoded in %v\n", droplet.BlockId, totalTimeTaken)
+					err = logFile.Close()
+					if err != nil {
+						log.Fatal(err)
+					}
 				}
 			}
 		}
