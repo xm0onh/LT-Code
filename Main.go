@@ -113,7 +113,7 @@ func main() {
 	CommitteeSize := 2 * numberOfMicroBlocks
 	conAct.MsgsPort = "18002"
 
-	const maxResponders = 5                            // Maximum number of responders
+	const maxResponders = 150                          // Maximum number of responders
 	var responderPorts = make([]string, maxResponders) // Map to store responders' IPs and their corresponding ports
 	basePort := 18002                                  // Starting port number
 
