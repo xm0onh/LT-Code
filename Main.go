@@ -159,7 +159,7 @@ func main() {
 		fmt.Println("Done with Decoding!")
 
 		fmt.Println("Start the KZG Trusted Setup")
-		conAct.KZGSetup = *kzg.InitKZG(dropletSlice)
+		// conAct.KZGSetup = *kzg.InitKZG(dropletSlice)
 		// fmt.Println("KZG Commitment is", comm)
 		// fmt.Println("KZG z is", z)
 		// fmt.Println("KZG y is", y)
@@ -177,7 +177,7 @@ func main() {
 	if Net.IfIamArequestor(conAct.RequestorIDs, conAct.MyID) {
 
 		fmt.Println(" I am a requestor!")
-		kzgReq := kzg.CreateKZGRequest()
+		// kzgReq := kzg.CreateKZGRequest()
 		totalBlocks := numberofMacroBlocks
 		// blocksForNode1 := totalBlocks / 2 // Half of the blocks for Node 1
 		// blocksForNode2 := totalBlocks - blocksForNode1 // Remaining blocks for Node 2
@@ -206,8 +206,8 @@ func main() {
 				conAct.AddEncodertoNodeIDMap(conAct.NodeIdToDialConnMapResponders)
 
 				for ID, IP := range conAct.IDToIPMPResponders {
-					go Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
-					fmt.Println(<-conAct.KZGVerficationStatus)
+					// go Net.KZGZSender(conAct.NodeIdToDialConnMapResponders[ID], kzgReq, IP, ID, port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
+					// fmt.Println(<-conAct.KZGVerficationStatus)
 					fmt.Println("Test after Verification")
 					Net.MsgSender(conAct.NodeIdToDialConnMapResponders[ID], request, IP, ID, port, &conAct.NodeIdToDialConnMapResponders, &conAct.NodeIDToEncoderMap)
 
