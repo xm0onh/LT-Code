@@ -113,7 +113,7 @@ func main() {
 	CommitteeSize := 2 * numberOfMicroBlocks
 	conAct.MsgsPort = "18002"
 
-	const maxResponders = 150                          // Maximum number of responders
+	const maxResponders = 20                          // Maximum number of responders
 	var responderPorts = make([]string, maxResponders) // Map to store responders' IPs and their corresponding ports
 	basePort := 18002                                  // Starting port number
 
@@ -167,22 +167,14 @@ func main() {
 	}
 	/////////////////////KZG Commitment//////////
 
-	/////////////////////Encoder//////////
-	// fmt.Println("Requestor IDs are", conAct.RequestorIDs)
-	// fmt.Println("My ID is", conAct.MyID)
-	//if len(conAct.NodeIdToDialConnMap) == 0 {
-
-	//}
 	conAct.TimeCalc = time.Now()
 	if Net.IfIamArequestor(conAct.RequestorIDs, conAct.MyID) {
 
 		fmt.Println(" I am a requestor!")
 		kzgReq := kzg.CreateKZGRequest()
 		totalBlocks := numberofMacroBlocks
-		// blocksForNode1 := totalBlocks / 2 // Half of the blocks for Node 1
-		// blocksForNode2 := totalBlocks - blocksForNode1 // Remaining blocks for Node 2
 		blocksPerResponder := totalBlocks / maxResponders
-		for responderIndex := 0; responderIndex < 100; responderIndex++ {
+		for responderIndex := 0; responderIndex < 20; responderIndex++ {
 			go func(responderIndex int) {
 				startBlock := responderIndex*blocksPerResponder + 1
 				endBlock := startBlock + blocksPerResponder - 1
